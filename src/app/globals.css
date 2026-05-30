@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-serif), serif;
+  --font-sans: var(--font-jakarta), sans-serif;
+  
+  --color-gold-50: #fcf9f2;
+  --color-gold-100: #f7eed8;
+  --color-gold-200: #edd6af;
+  --color-gold-300: #dfb77d;
+  --color-gold-400: #cfa156;
+  --color-gold-500: #c5a880;
+  --color-gold-600: #a88a5f;
+  --color-gold-700: #886a42;
+  --color-gold-800: #6b5131;
+  --color-gold-900: #523d25;
+  --color-gold-950: #2f2113;
+}
+
+:root {
+  --background: #090a0f;
+  --foreground: #f3f4f6;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+/* Custom Utilities for Premium Look */
+.glassmorphism {
+  background: rgba(18, 20, 28, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glassmorphism-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
