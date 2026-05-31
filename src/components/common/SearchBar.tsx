@@ -23,61 +23,82 @@ export default function SearchBar() {
   return (
     <form
       onSubmit={handleSearch}
-      className="w-full max-w-4xl bg-neutral-900/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row gap-4 items-end animate-fade-in"
+      className="w-full max-w-4xl bg-white p-4 sm:p-6 rounded-none border border-brand-gray-medium shadow-lg flex flex-col md:flex-row gap-4 items-end animate-fade-in"
     >
       {/* Project Selector */}
       <div className="w-full md:w-1/3 flex flex-col gap-2">
-        <label className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Dự án</label>
-        <select
-          value={project}
-          onChange={(e) => setProject(e.target.value)}
-          className="w-full bg-neutral-950/80 text-white border border-neutral-800 focus:border-amber-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
-        >
-          <option value="">Tất cả dự án</option>
-          {mockProjects.map((p) => (
-            <option key={p.slug} value={p.slug}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+        <label className="text-xs font-semibold text-brand-brown uppercase tracking-wider">Dự án</label>
+        <div className="relative">
+          <select
+            value={project}
+            onChange={(e) => setProject(e.target.value)}
+            className="w-full bg-white text-brand-brown border border-brand-gray-medium focus:border-brand-brown rounded-none px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
+          >
+            <option value="">Tất cả dự án</option>
+            {mockProjects.map((p) => (
+              <option key={p.slug} value={p.slug}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-brand-brown">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* Product Type Selector */}
       <div className="w-full md:w-1/3 flex flex-col gap-2">
-        <label className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Loại hình</label>
-        <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          className="w-full bg-neutral-950/80 text-white border border-neutral-800 focus:border-amber-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
-        >
-          <option value="">Tất cả loại hình</option>
-          <option value="villa">Biệt thự & Dinh thự</option>
-          <option value="townhouse">Liền kề & Shophouse</option>
-          <option value="apartment">Căn hộ chung cư</option>
-          <option value="residential">Đất nền & Nhà thổ cư</option>
-        </select>
+        <label className="text-xs font-semibold text-brand-brown uppercase tracking-wider">Loại hình</label>
+        <div className="relative">
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full bg-white text-brand-brown border border-brand-gray-medium focus:border-brand-brown rounded-none px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
+          >
+            <option value="">Tất cả loại hình</option>
+            <option value="villa">Biệt thự & Dinh thự</option>
+            <option value="townhouse">Liền kề & Shophouse</option>
+            <option value="apartment">Căn hộ chung cư</option>
+            <option value="residential">Đất nền & Nhà thổ cư</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-brand-brown">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* Price Selector */}
       <div className="w-full md:w-1/3 flex flex-col gap-2">
-        <label className="text-xs font-semibold text-amber-400 uppercase tracking-wider">Khoảng giá</label>
-        <select
-          value={priceRange}
-          onChange={(e) => setPriceRange(e.target.value)}
-          className="w-full bg-neutral-950/80 text-white border border-neutral-800 focus:border-amber-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
-        >
-          <option value="">Tất cả mức giá</option>
-          <option value="under-5">Dưới 5 tỷ</option>
-          <option value="5-10">5 tỷ - 10 tỷ</option>
-          <option value="10-20">10 tỷ - 20 tỷ</option>
-          <option value="above-20">Trên 20 tỷ</option>
-        </select>
+        <label className="text-xs font-semibold text-brand-brown uppercase tracking-wider">Khoảng giá</label>
+        <div className="relative">
+          <select
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+            className="w-full bg-white text-brand-brown border border-brand-gray-medium focus:border-brand-brown rounded-none px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
+          >
+            <option value="">Tất cả mức giá</option>
+            <option value="under-5">Dưới 5 tỷ</option>
+            <option value="5-10">5 tỷ - 10 tỷ</option>
+            <option value="10-20">10 tỷ - 20 tỷ</option>
+            <option value="above-20">Trên 20 tỷ</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-brand-brown">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full md:w-auto bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-neutral-900 font-bold px-8 py-3 rounded-lg text-sm transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 flex items-center justify-center gap-2 cursor-pointer h-10 md:h-auto"
+        className="w-full md:w-auto bg-brand-brown border-2 border-brand-brown text-white font-semibold px-8 py-2.5 rounded-none text-sm hover:bg-brand-taupe hover:border-brand-taupe transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer h-[42px] shrink-0"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

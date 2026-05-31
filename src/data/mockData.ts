@@ -26,12 +26,12 @@ export interface Product {
   location: string;
   description: string;
   projectSlug: string; // "ocean-park-1", "ocean-park-2", "ha-long-xanh", "ngoai-du-an"
-  productType: 'villa' | 'townhouse' | 'apartment' | 'residential'; // biệt thự, liền kề, căn hộ, nhà thổ cư
+  productType: 'villa' | 'townhouse' | 'apartment' | 'residential' | 'shophouse'; // Nhà ở ngay, Nhà sắp nhận, biệt thự, liền kề, căn hộ, nhà thổ cư
   productTypeName: string;
   isPremium: boolean; // Masterise, MIK Group...
   developer?: string; // "Masterise Homes", "MIK Group", "Vinhomes", v.v.
   images: string[];
-  status: 'Còn hàng' | 'Đã cọc' | 'Đã bán';
+  status: 'Còn hàng' | 'Đã cọc' | 'Đã bán' | 'Đang bán' | 'Sắp mở bán';
   direction: string;
   legal: string;
 }
@@ -122,6 +122,21 @@ export const mockProjects: Project[] = [
     scale: '39.8 ha (toàn khu)',
     priceRange: '5.5 tỷ - 25 tỷ',
     tags: ['Căn hộ siêu sang', 'Mỹ Đình', 'MIK Group', 'View công viên 14ha']
+  },
+  {
+    id: 'proj-6',
+    name: 'Sun Premier Village Primavera',
+    slug: 'sun-primavera',
+    location: 'An Thới, Phú Quốc, Kiên Giang',
+    developer: 'Sun Group',
+    shortDescription: 'Thị trấn Địa Trung Hải phồn hoa - Biểu tượng kiến trúc nghệ thuật và nghỉ dưỡng đẳng cấp bên bờ Nam đảo ngọc.',
+    description: 'Sun Premier Village Primavera sở hữu vị trí đắc địa tại ga đi cáp treo Hòn Thơm, Phú Quốc. Dự án tái hiện một thị trấn ven biển Địa Trung Hải rực rỡ sắc màu với những căn shophouse thoải dần về phía biển, các quảng trường nghệ thuật lớn và công trình biểu tượng Cầu Hôn (Kiss Bridge).',
+    image: '/images/project-sun.png',
+    banner: '/images/project-sun.png',
+    status: 'Đã bàn giao',
+    scale: '39.3 ha',
+    priceRange: '18 tỷ - 85 tỷ',
+    tags: ['Địa Trung Hải', 'Phú Quốc', 'Sun Group', 'Cận biển']
   }
 ];
 
@@ -291,6 +306,27 @@ export const mockProducts: Product[] = [
     images: ['/images/ha-long-xanh-hero.png', '/images/prop-villa-1-int.png'],
     status: 'Còn hàng',
     direction: 'Đông Nam',
+    legal: 'Sổ đỏ lâu dài'
+  },
+  {
+    id: 'prod-9',
+    title: 'Biệt Thự Sun Premier Village Phú Quốc - Sát Biển Bãi Khem Tuyệt Mỹ',
+    slug: 'biet-thu-sun-premier-village-phu-quoc',
+    price: 65.0,
+    pricePerSqm: 216.6,
+    area: 300,
+    bedrooms: 4,
+    bathrooms: 5,
+    location: 'Mũi Ông Đội, An Thới, Phú Quốc',
+    description: 'Biệt thự nghỉ dưỡng 2 tầng sát biển tại Mũi Ông Đội, Phú Quốc. Thiết kế giật cấp độc đáo tôn vinh thiên nhiên hoang sơ, sở hữu tầm nhìn 2 mặt biển ngắm hoàng hôn và bình minh tuyệt đẹp. Tiêu chuẩn bàn giao full nội thất cao cấp 5 sao quốc tế vận hành bởi tập đoàn danh tiếng.',
+    projectSlug: 'sun-primavera',
+    productType: 'villa',
+    productTypeName: 'Biệt thự',
+    isPremium: true,
+    developer: 'Sun Group',
+    images: ['/images/prop-villa-sun.png'],
+    status: 'Còn hàng',
+    direction: 'Tây Nam',
     legal: 'Sổ đỏ lâu dài'
   }
 ];

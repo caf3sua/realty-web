@@ -12,12 +12,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-serif",
+  variable: "--font-playfair",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ánh Dương Land - Sàn Bất Động Sản Cao Cấp",
+  title: "Anh Duong Property - Sàn Bất Động Sản Cao Cấp",
   description: "Chuyên phân phối, ký gửi biệt thự, liền kề, căn hộ hạng sang tại Vinhomes Ocean Park, Vinhomes Hạ Long Xanh và các dự án cao cấp khác.",
 };
 
@@ -31,9 +31,9 @@ export default function RootLayout({
       lang="vi"
       className={`${plusJakartaSans.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-neutral-950 text-neutral-100 font-sans">
+      <body className="min-h-full flex flex-col bg-white text-brand-verydark font-sans">
         <Header />
-        <main className="flex-grow pt-20">
+        <main className="flex-grow pt-20 bg-white">
           {children}
         </main>
         <Footer />

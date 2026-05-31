@@ -1,25 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: var(--font-serif), serif;
-  --font-sans: var(--font-jakarta), sans-serif;
-  
-  --color-gold-50: #fcf9f2;
-  --color-gold-100: #f7eed8;
-  --color-gold-200: #edd6af;
-  --color-gold-300: #dfb77d;
-  --color-gold-400: #cfa156;
-  --color-gold-500: #c5a880;
-  --color-gold-600: #a88a5f;
-  --color-gold-700: #886a42;
-  --color-gold-800: #6b5131;
-  --color-gold-900: #523d25;
-  --color-gold-950: #2f2113;
+  /* Font Stacks */
+  --font-serif: "SVN-Cera", var(--font-playfair), Georgia, serif;
+  --font-sans: "Neurial Grotesk", var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Brand Earthy Tones & Accent Colors */
+  --color-brand-brown: #472D0A;
+  --color-brand-taupe: #886D49;
+  --color-brand-darkbrown: #3A2408;
+
+  --color-brand-blue: #007AFF;
+  --color-brand-lightblue: #5AC8FA;
+  --color-brand-teal: #34AADC;
+
+  /* Neutrals */
+  --color-brand-cream: #FCFCF9;
+  --color-brand-gray-light: #EEEEEE;
+  --color-brand-gray-medium: #E0E0E0;
+  --color-brand-gray-text: #757575;
+  --color-brand-charcoal: #616161;
+  --color-brand-verydark: #121212;
 }
 
 :root {
-  --background: #090a0f;
-  --foreground: #f3f4f6;
+  --background: #FFFFFF;
+  --foreground: #472D0A;
   scroll-behavior: smooth;
 }
 
@@ -29,17 +35,39 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom Utilities for Premium Look */
-.glassmorphism {
-  background: rgba(18, 20, 28, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Elegant default styling for headings and texts */
+h1,
+h2 {
+  font-family: var(--font-serif);
+  color: var(--color-brand-brown);
 }
 
-.glassmorphism-light {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  color: var(--color-brand-brown);
+}
+
+a {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Premium utility classes matching DESIGN.md */
+.premium-card {
+  background-color: #FFFFFF;
+  color: #472D0A;
+  padding: 24px 32px;
+  border-radius: 0px;
+  border: 1px solid #E0E0E0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  border-color: #886D49;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 10px 10px -5px;
 }
 
 @keyframes fadeIn {
@@ -47,6 +75,7 @@ body {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -61,8 +90,11 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
