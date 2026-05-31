@@ -47,6 +47,16 @@ export interface NewsPost {
   category: 'Thị trường' | 'Quy hoạch' | 'Cẩm nang' | 'Dự án';
 }
 
+export interface Developer {
+  id: string;
+  name: string;
+  logo: string;
+  title: string;
+  description: string;
+  slug: string;
+  linkText: string;
+}
+
 export const mockProjects: Project[] = [
   {
     id: 'proj-1',
@@ -157,7 +167,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Biệt thự',
     isPremium: true,
     developer: 'Vinhomes',
-    images: ['/images/prop-villa-1.png', '/images/prop-villa-1-int.png'],
+    images: ['/images/prop-villa-1.png', '/images/prop-villa-1-int.png', '/images/prop-villa-1-ext2.png'],
     status: 'Còn hàng',
     direction: 'Đông Nam',
     legal: 'Sổ đỏ lâu dài'
@@ -178,7 +188,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Biệt thự',
     isPremium: false,
     developer: 'Vinhomes',
-    images: ['/images/prop-villa-2.png', '/images/prop-villa-2-int.png'],
+    images: ['/images/prop-villa-2.png', '/images/prop-villa-2-int.png', '/images/prop-villa-2-ext2.png'],
     status: 'Còn hàng',
     direction: 'Nam',
     legal: 'Hợp đồng mua bán'
@@ -199,7 +209,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Căn hộ',
     isPremium: true,
     developer: 'Masterise Homes',
-    images: ['/images/prop-apartment-1.png', '/images/prop-apartment-1-int.png'],
+    images: ['/images/prop-apartment-1.png', '/images/prop-apartment-1-int.png', '/images/prop-apartment-1-ext2.png'],
     status: 'Còn hàng',
     direction: 'Đông Bắc',
     legal: 'Sổ đỏ lâu dài'
@@ -220,7 +230,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Căn hộ',
     isPremium: true,
     developer: 'MIK Group',
-    images: ['/images/prop-apartment-2.png', '/images/prop-apartment-2-int.png'],
+    images: ['/images/prop-apartment-2.png', '/images/prop-apartment-2-int.png', '/images/prop-apartment-2-ext2.png'],
     status: 'Đã cọc',
     direction: 'Tây Nam',
     legal: 'Sổ đỏ lâu dài'
@@ -241,7 +251,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Liền kề',
     isPremium: false,
     developer: 'Vinhomes',
-    images: ['/images/prop-townhouse-1.png', '/images/prop-townhouse-1-int.png'],
+    images: ['/images/prop-townhouse-1.png', '/images/prop-townhouse-1-int.png', '/images/prop-townhouse-1-ext2.png'],
     status: 'Còn hàng',
     direction: 'Đông Nam',
     legal: 'Sổ đỏ lâu dài'
@@ -261,7 +271,7 @@ export const mockProducts: Product[] = [
     productType: 'residential',
     productTypeName: 'Nhà thổ cư',
     isPremium: false,
-    images: ['/images/prop-townhouse-2.png', '/images/prop-townhouse-2-int.png'],
+    images: ['/images/prop-townhouse-2.png', '/images/prop-townhouse-2-int.png', '/images/prop-townhouse-2-ext2.png'],
     status: 'Còn hàng',
     direction: 'Tây',
     legal: 'Sổ đỏ lâu dài'
@@ -282,7 +292,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Liền kề',
     isPremium: false,
     developer: 'Vinhomes',
-    images: ['/images/prop-townhouse-1.png'],
+    images: ['/images/prop-townhouse-1.png', '/images/prop-townhouse-1-int.png', '/images/prop-townhouse-1-ext2.png'],
     status: 'Còn hàng',
     direction: 'Nam',
     legal: 'Hợp đồng mua bán'
@@ -303,7 +313,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Biệt thự',
     isPremium: true,
     developer: 'Vinhomes',
-    images: ['/images/ha-long-xanh-hero.png', '/images/prop-villa-1-int.png'],
+    images: ['/images/ha-long-xanh-hero.png', '/images/prop-villa-1-int.png', '/images/prop-villa-1-ext2.png'],
     status: 'Còn hàng',
     direction: 'Đông Nam',
     legal: 'Sổ đỏ lâu dài'
@@ -324,7 +334,7 @@ export const mockProducts: Product[] = [
     productTypeName: 'Biệt thự',
     isPremium: true,
     developer: 'Sun Group',
-    images: ['/images/prop-villa-sun.png'],
+    images: ['/images/prop-villa-sun.png', '/images/prop-villa-sun-int.png', '/images/prop-villa-sun-ext2.png'],
     status: 'Còn hàng',
     direction: 'Tây Nam',
     legal: 'Sổ đỏ lâu dài'
@@ -361,5 +371,44 @@ export const mockNews: NewsPost[] = [
     image: '/images/project-op1-banner.png',
     publishedAt: '2026-05-12',
     category: 'Quy hoạch'
+  }
+];
+
+export const mockDevelopers: Developer[] = [
+  {
+    id: 'dev-1',
+    name: 'Masterise Homes',
+    logo: '/images/logo-Masterise-Homes.png',
+    title: 'Phong Cách Sống Hàng Hiệu',
+    description: 'Nhà phát triển bất động sản hàng hiệu hàng đầu Việt Nam, hợp tác cùng các đối tác toàn cầu như Elie Saab, Marriott International. Kiến tạo giá trị sống trường tồn và dịch vụ quản lý chất lượng thế giới.',
+    slug: 'masterise-homes',
+    linkText: 'Xem Các Căn Hộ Masterise Homes'
+  },
+  {
+    id: 'dev-2',
+    name: 'MIK Group',
+    logo: '/images/logo-MIK-Group.png',
+    title: 'Chuẩn Mực Sống Sang Trọng',
+    description: 'Nổi tiếng với định vị dòng sản phẩm hạng sang The Matrix One và Imperia, MIK Group kiến tạo các giá trị sống bền vững, thiết kế xanh hài hòa thiên nhiên kết hợp công nghệ thông minh thời thượng.',
+    slug: 'mik-group',
+    linkText: 'Xem Các Căn Hộ MIK Group'
+  },
+  {
+    id: 'dev-3',
+    name: 'Vinhomes',
+    logo: '/images/logo-vinhomes.png',
+    title: 'Đại Đô Thị Biển Quốc Tế',
+    description: 'Thương hiệu bất động sản số 1 Việt Nam, nổi bật với các siêu dự án đô thị sinh thái kết hợp biển hồ nhân tạo kỳ vĩ, quy hoạch đồng bộ "Tất cả trong một" kiến tạo chuẩn mực sống văn minh hiện đại hàng đầu.',
+    slug: 'vinhomes',
+    linkText: 'Xem Các Sản Phẩm Vinhomes'
+  },
+  {
+    id: 'dev-4',
+    name: 'Sun Group',
+    logo: '/images/logo-sun-group.png',
+    title: 'Kiệt Tác Nghỉ Dưỡng Độc Bản',
+    description: 'Tập đoàn hàng đầu trong phát triển bất động sản gắn liền với du lịch nghỉ dưỡng cao cấp, shophouse phong cách nghệ thuật Địa Trung Hải và các dinh thiện biển tráng lệ hòa mình cùng thiên nhiên kỳ vĩ.',
+    slug: 'sun-group',
+    linkText: 'Xem Các Sản Phẩm Sun Group'
   }
 ];

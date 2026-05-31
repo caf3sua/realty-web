@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { mockProducts } from '@/data/mockData';
+import { mockProducts, mockDevelopers } from '@/data/mockData';
 
 export default function LuxurySegmentPage() {
   // Filter only premium products
@@ -26,101 +26,30 @@ export default function LuxurySegmentPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
         <h2 className="text-2xl font-serif text-brand-brown font-semibold text-center">Chủ Đầu Tư Danh Giá</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Masterise Homes Card */}
-          <div className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
-            <div className="space-y-4">
-              <div className="h-10 flex items-center justify-start mb-2">
-                <img
-                  src="/images/logo-Masterise-Homes.png"
-                  alt="Masterise Homes Logo"
-                  className="h-7 w-auto object-contain"
-                />
+          {mockDevelopers.map((dev) => (
+            <div key={dev.id} className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
+              <div className="space-y-4">
+                <div className="h-10 flex items-center justify-start mb-2">
+                  <img
+                    src={dev.logo}
+                    alt={`${dev.name} Logo`}
+                    className="h-8 w-auto object-contain"
+                  />
+                </div>
+                <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">{dev.name}</span>
+                <h3 className="text-2xl font-serif text-brand-brown font-medium">{dev.title}</h3>
+                <p className="text-brand-gray-text text-sm leading-relaxed">
+                  {dev.description}
+                </p>
               </div>
-              <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">Masterise Homes</span>
-              <h3 className="text-2xl font-serif text-brand-brown font-medium">Phong Cách Sống Hàng Hiệu</h3>
-              <p className="text-brand-gray-text text-sm leading-relaxed">
-                Nhà phát triển bất động sản hàng hiệu hàng đầu Việt Nam, hợp tác cùng các đối tác toàn cầu như Elie Saab, Marriott International. Kiến tạo giá trị sống trường tồn và dịch vụ quản lý chất lượng thế giới.
-              </p>
+              <Link
+                href={`/cao-cap/${dev.slug}`}
+                className="bg-white hover:bg-brand-cream text-brand-brown hover:text-brand-taupe border-2 border-brand-brown hover:border-brand-taupe text-xs font-bold py-3 rounded-none text-center transition-all"
+              >
+                {dev.linkText}
+              </Link>
             </div>
-            <Link
-              href="/cao-cap/masterise-homes"
-              className="bg-white hover:bg-brand-cream text-brand-brown hover:text-brand-taupe border-2 border-brand-brown hover:border-brand-taupe text-xs font-bold py-3 rounded-none text-center transition-all"
-            >
-              Xem Các Căn Hộ Masterise Homes
-            </Link>
-          </div>
-
-          {/* MIK Group Card */}
-          <div className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
-            <div className="space-y-4">
-              <div className="h-10 flex items-center justify-start mb-2">
-                <img
-                  src="/images/logo-MIK-Group.png"
-                  alt="MIK Group Logo"
-                  className="h-7 w-auto object-contain"
-                />
-              </div>
-              <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">MIK Group</span>
-              <h3 className="text-2xl font-serif text-brand-brown font-medium">Chuẩn Mực Sống Sang Trọng</h3>
-              <p className="text-brand-gray-text text-sm leading-relaxed">
-                Nổi tiếng với định vị dòng sản phẩm hạng sang The Matrix One và Imperia, MIK Group kiến tạo các giá trị sống bền vững, thiết kế xanh hài hòa thiên nhiên kết hợp công nghệ thông minh thời thượng.
-              </p>
-            </div>
-            <Link
-              href="/cao-cap/mik-group"
-              className="bg-white hover:bg-brand-cream text-brand-brown hover:text-brand-taupe border-2 border-brand-brown hover:border-brand-taupe text-xs font-bold py-3 rounded-none text-center transition-all"
-            >
-              Xem Các Căn Hộ MIK Group
-            </Link>
-          </div>
-
-          {/* Vinhomes Card */}
-          <div className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
-            <div className="space-y-4">
-              <div className="h-10 flex items-center justify-start mb-2">
-                <img
-                  src="/images/logo-vinhomes.png"
-                  alt="Vinhomes Logo"
-                  className="h-7 w-auto object-contain"
-                />
-              </div>
-              <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">Vinhomes</span>
-              <h3 className="text-2xl font-serif text-brand-brown font-medium">Đại Đô Thị Biển Quốc Tế</h3>
-              <p className="text-brand-gray-text text-sm leading-relaxed">
-                Thương hiệu bất động sản số 1 Việt Nam, nổi bật với các siêu dự án đô thị sinh thái kết hợp biển hồ nhân tạo kỳ vĩ, quy hoạch đồng bộ "Tất cả trong một" kiến tạo chuẩn mực sống văn minh hiện đại hàng đầu.
-              </p>
-            </div>
-            <Link
-              href="/cao-cap/vinhomes"
-              className="bg-white hover:bg-brand-cream text-brand-brown hover:text-brand-taupe border-2 border-brand-brown hover:border-brand-taupe text-xs font-bold py-3 rounded-none text-center transition-all"
-            >
-              Xem Các Sản Phẩm Vinhomes
-            </Link>
-          </div>
-
-          {/* Sun Group Card */}
-          <div className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
-            <div className="space-y-4">
-              <div className="h-10 flex items-center justify-start mb-2">
-                <img
-                  src="/images/logo-sun-group.png"
-                  alt="Sun Group Logo"
-                  className="h-9 w-auto object-contain"
-                />
-              </div>
-              <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">Sun Group</span>
-              <h3 className="text-2xl font-serif text-brand-brown font-medium">Kiệt Tác Nghỉ Dưỡng Độc Bản</h3>
-              <p className="text-brand-gray-text text-sm leading-relaxed">
-                Tập đoàn hàng đầu trong phát triển bất động sản gắn liền với du lịch nghỉ dưỡng cao cấp, shophouse phong cách nghệ thuật Địa Trung Hải và các dinh thự biển tráng lệ hòa mình cùng thiên nhiên kỳ vĩ.
-              </p>
-            </div>
-            <Link
-              href="/cao-cap/sun-group"
-              className="bg-white hover:bg-brand-cream text-brand-brown hover:text-brand-taupe border-2 border-brand-brown hover:border-brand-taupe text-xs font-bold py-3 rounded-none text-center transition-all"
-            >
-              Xem Các Sản Phẩm Sun Group
-            </Link>
-          </div>
+          ))}
         </div>
       </section>
 

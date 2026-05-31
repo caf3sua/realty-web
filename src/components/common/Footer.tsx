@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,8 +13,15 @@ export default function Footer() {
 
           {/* Brand Info */}
           <div className="space-y-4">
-            <Link href="/" className="inline-block">
-              <span className="text-xl font-bold text-white font-serif tracking-wider">
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image
+                src="/images/logo-blue.png"
+                alt="Anh Duong Property Logo"
+                width={36}
+                height={36}
+                className="object-contain"
+              />
+              <span className="text-xl font-bold text-white font-serif tracking-wider group-hover:text-brand-cream transition-colors">
                 ANH DUONG PROPERTY
               </span>
             </Link>

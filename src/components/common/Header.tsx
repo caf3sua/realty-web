@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +44,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-3 group">
+            <Image
+              src="/images/logo-blue.png"
+              alt="Anh Duong Property Logo"
+              width={36}
+              height={36}
+              className="object-contain"
+            />
             <span className="text-xl lg:text-2xl font-bold text-brand-brown font-serif tracking-wider group-hover:text-brand-taupe transition-colors">
               ANH DUONG PROPERTY
             </span>
@@ -90,7 +98,7 @@ export default function Header() {
                   d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                 />
               </svg>
-              0938129969
+              0938 129 969
             </a>
             <Link
               href="#contact-form"

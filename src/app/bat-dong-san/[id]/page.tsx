@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { mockProducts, mockProjects } from '@/data/mockData';
 import ContactForm from '@/components/common/ContactForm';
+import ProductGallery from '@/components/common/ProductGallery';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -44,41 +45,7 @@ export default async function ProductDetailPage({ params }: Props) {
       </nav>
 
       {/* 2. Image Gallery */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Main image */}
-        <div className="md:col-span-2 relative h-[300px] sm:h-[450px] rounded-none overflow-hidden border border-brand-gray-medium">
-          <Image
-            src={product.images[0]}
-            alt={product.title}
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
-        {/* Sub image grid */}
-        <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
-          <div className="relative h-[140px] sm:h-[217px] rounded-none overflow-hidden border border-brand-gray-medium">
-            <Image
-              src={product.images[1] || product.images[0]}
-              alt={`${product.title} view 2`}
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative h-[140px] sm:h-[217px] rounded-none overflow-hidden border border-brand-gray-medium bg-brand-verydark/50 flex items-center justify-center">
-            {/* Show cover image or overlay */}
-            <Image
-              src={product.images[0]}
-              alt={`${product.title} view 3`}
-              fill
-              className="object-cover opacity-35 filter blur-xs"
-            />
-            <span className="relative z-10 text-white font-bold text-sm tracking-wider uppercase">
-              + Xem Thêm Ảnh
-            </span>
-          </div>
-        </div>
-      </div>
+      <ProductGallery images={product.images} title={product.title} />
 
       {/* 3. Main Info Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -202,7 +169,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 href="tel:0938129969"
                 className="w-full bg-brand-brown border-2 border-brand-brown hover:bg-brand-taupe hover:border-brand-taupe text-white font-bold py-3 rounded-none text-center text-sm block transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                Gọi Ngay: 0938129969
+                Gọi Ngay: 0938 129 969
               </a>
               <a
                 href="https://zalo.me/0919936576"
