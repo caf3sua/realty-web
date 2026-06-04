@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { mockProducts } from '@/data/mockData';
+import { api } from '@/services/api';
+import type { Product } from '@/data/mockData';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -46,9 +47,12 @@ export default async function LuxuryBrandPage({ params }: Props) {
   }
 
   // Filter products by developer name
-  const brandProducts = mockProducts.filter(
-    (p) => p.developer?.toLowerCase() === brandInfo.developerName.toLowerCase()
-  );
+  let brandProducts: Product[] = [];
+  try {
+    brandProducts = await api.getProducts({ developer: brandInfo.developerName });
+  } catch (error) {
+    console.error("Error loading products for luxury brand:", error);
+  }
 
   return (
     <div className="space-y-16 pb-20 bg-white">
@@ -91,8 +95,8 @@ export default async function LuxuryBrandPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {brandProducts.map((product) => (
               <Link
-                href={`/bat-dong-san/${product.id}`}
-                key={product.id}
+                href={`/bat-dong-san/${product.slug}`}
+                key={product.slug}
                 className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
               >
                 <div className="relative h-56 w-full overflow-hidden">

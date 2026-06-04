@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { mockProjects, mockProducts } from '@/data/mockData';
+import { api } from '@/services/api';
+import type { Project, Product } from '@/data/mockData';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -9,14 +10,20 @@ interface Props {
 
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
-  const project = mockProjects.find((p) => p.slug === slug);
+  
+  let project: Project | null = null;
+  let projectProducts: Product[] = [];
+
+  try {
+    project = await api.getProject(slug);
+    projectProducts = await api.getProducts({ project_slug: slug });
+  } catch (error) {
+    console.error("Error loading project details:", error);
+  }
 
   if (!project) {
     notFound();
   }
-
-  // Filter products for this project
-  const projectProducts = mockProducts.filter((prod) => prod.projectSlug === slug);
 
   return (
     <div className="space-y-16 pb-20 bg-white">
@@ -100,8 +107,8 @@ export default async function ProjectDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {projectProducts.map((product) => (
               <Link
-                href={`/bat-dong-san/${product.id}`}
-                key={product.id}
+                href={`/bat-dong-san/${product.slug}`}
+                key={product.slug}
                 className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Image */}

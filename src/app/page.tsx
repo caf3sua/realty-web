@@ -1,17 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchBar from '@/components/common/SearchBar';
-import { mockProjects, mockProducts, mockNews } from '@/data/mockData';
+import { mockNews } from '@/data/mockData';
+import { api } from '@/services/api';
 
-export default function Home() {
+export default async function Home() {
+  // Fetch projects and products from the service
+  const [projects, products] = await Promise.all([
+    api.getProjects(),
+    api.getProducts()
+  ]);
+
   // Get featured projects
-  const featuredProjects = mockProjects.slice(0, 3);
+  const featuredProjects = projects.slice(0, 3);
 
   // Get featured products
-  const featuredProducts = mockProducts.slice(0, 4);
+  const featuredProducts = products.slice(0, 4);
 
   // Get premium products (Masterise, MIK Group)
-  const premiumProducts = mockProducts.filter(p => p.isPremium).slice(0, 3);
+  const premiumProducts = products.filter(p => p.isPremium).slice(0, 3);
 
   // Get latest news
   const latestNews = mockNews.slice(0, 3);
@@ -52,7 +59,7 @@ export default function Home() {
           </p>
 
           {/* Search Bar Component */}
-          <SearchBar />
+          <SearchBar projects={projects} />
         </div>
       </section>
 
@@ -132,8 +139,8 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
             <Link
-              href={`/bat-dong-san/${product.id}`}
-              key={product.id}
+              href={`/bat-dong-san/${product.slug}`}
+              key={product.slug}
               className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
             >
               {/* Product Image */}
@@ -257,7 +264,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between items-center pt-3 border-t border-brand-gray-light text-xs">
                   <span className="text-brand-taupe font-bold">{premiumProducts[0]?.price} Tỷ ({premiumProducts[0]?.area} m²)</span>
-                  <Link href={`/bat-dong-san/${premiumProducts[0]?.id}`} className="text-brand-brown hover:text-brand-taupe transition-colors font-semibold">
+                  <Link href={`/bat-dong-san/${premiumProducts[0]?.slug}`} className="text-brand-brown hover:text-brand-taupe transition-colors font-semibold">
                     Chi tiết &rarr;
                   </Link>
                 </div>

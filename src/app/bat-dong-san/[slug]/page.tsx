@@ -1,29 +1,43 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { mockProducts, mockProjects } from '@/data/mockData';
+import { api } from '@/services/api';
+import type { Product, Project } from '@/data/mockData';
 import ContactForm from '@/components/common/ContactForm';
 import ProductGallery from '@/components/common/ProductGallery';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { id } = await params;
-  const product = mockProducts.find((p) => p.id === id);
+  const { slug } = await params;
+
+  let product: Product | null = null;
+  let project: Project | null = null;
+  let relatedProducts: Product[] = [];
+
+  try {
+    product = await api.getProduct(slug);
+    if (product) {
+      const [projectRes, productsRes] = await Promise.all([
+        product.projectSlug && product.projectSlug !== 'ngoai-du-an' 
+          ? api.getProject(product.projectSlug).catch(() => null)
+          : Promise.resolve(null),
+        api.getProducts({ product_type: product.productType })
+      ]);
+      project = projectRes;
+      relatedProducts = productsRes
+        .filter((p) => p.slug !== product!.slug)
+        .slice(0, 4);
+    }
+  } catch (error) {
+    console.error("Error loading product details by slug:", error);
+  }
 
   if (!product) {
     notFound();
   }
-
-  // Find project details if any
-  const project = mockProjects.find((p) => p.slug === product.projectSlug);
-
-  // Find related products
-  const relatedProducts = mockProducts
-    .filter((p) => p.productType === product.productType && p.id !== product.id)
-    .slice(0, 4);
 
   const formatPrice = (val: number) => {
     if (val > 100) return 'Liên hệ';
@@ -104,7 +118,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm border-y border-brand-gray-light py-4">
               <div className="flex justify-between border-b border-brand-gray-light pb-2 sm:border-0 sm:pb-0">
                 <span className="text-brand-gray-text">Mã sản phẩm:</span>
-                <span className="text-brand-brown font-medium">{product.id.toUpperCase()}</span>
+                <span className="text-brand-brown font-medium">{product.id ? product.id.toUpperCase() : ''}</span>
               </div>
               <div className="flex justify-between border-b border-brand-gray-light pb-2 sm:border-0 sm:pb-0">
                 <span className="text-brand-gray-text">Hướng nhà:</span>
@@ -197,8 +211,8 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((prod) => (
               <Link
-                href={`/bat-dong-san/${prod.id}`}
-                key={prod.id}
+                href={`/bat-dong-san/${prod.slug}`}
+                key={prod.slug}
                 className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
               >
                 <div className="relative h-44 w-full overflow-hidden">

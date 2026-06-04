@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { mockProjects } from '@/data/mockData';
+import { api } from '@/services/api';
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await api.getProjects();
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
@@ -17,7 +18,7 @@ export default function ProjectsPage() {
 
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {mockProjects.map((project) => (
+        {projects.map((project) => (
           <div
             key={project.id}
             className="group bg-white border border-brand-gray-medium hover:border-brand-taupe rounded-none overflow-hidden flex flex-col h-full transition-all duration-300 hover:shadow-lg"
