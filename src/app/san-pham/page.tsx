@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { mockProducts, mockProjects } from '@/data/mockData';
+import { api } from '@/services/api';
 
 interface Props {
   searchParams: Promise<{
@@ -13,8 +13,14 @@ interface Props {
 export default async function ProductsPage({ searchParams }: Props) {
   const { project, type, price } = await searchParams;
 
+  // Fetch all projects and products from the API
+  const [projects, products] = await Promise.all([
+    api.getProjects(),
+    api.getProducts()
+  ]);
+
   // Filter products based on search parameters
-  let filteredProducts = mockProducts;
+  let filteredProducts = products;
 
   if (project) {
     filteredProducts = filteredProducts.filter((p) => p.projectSlug === project);
@@ -39,7 +45,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   const getFilterText = () => {
     const parts = [];
     if (project) {
-      const projName = mockProjects.find((p) => p.slug === project)?.name;
+      const projName = projects.find((p) => p.slug === project)?.name;
       parts.push(`Dự án: ${projName || project}`);
     }
     if (type) {
@@ -96,8 +102,8 @@ export default async function ProductsPage({ searchParams }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Link
-              href={`/bat-dong-san/${product.id}`}
-              key={product.id}
+              href={`/bat-dong-san/${product.slug}`}
+              key={product.slug}
               className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
             >
               <div className="relative h-48 w-full overflow-hidden">

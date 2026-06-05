@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { mockProducts } from '@/data/mockData';
+import { api } from '@/services/api';
+import type { Product } from '@/data/mockData';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -42,7 +43,12 @@ export default async function ProductCategoryPage({ params }: Props) {
   }
 
   // Filter products by type
-  const categoryProducts = mockProducts.filter((p) => p.productType === categoryInfo.type);
+  let categoryProducts: Product[] = [];
+  try {
+    categoryProducts = await api.getProducts({ product_type: categoryInfo.type });
+  } catch (error) {
+    console.error("Error loading products for category:", error);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
@@ -61,8 +67,8 @@ export default async function ProductCategoryPage({ params }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categoryProducts.map((product) => (
             <Link
-              href={`/bat-dong-san/${product.id}`}
-              key={product.id}
+              href={`/bat-dong-san/${product.slug}`}
+              key={product.slug}
               className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
             >
               <div className="relative h-48 w-full overflow-hidden">

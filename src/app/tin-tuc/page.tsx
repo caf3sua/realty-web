@@ -1,12 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { mockNews } from '@/data/mockData';
+import { api } from '@/services/api';
 
 async function getPosts() {
   try {
-    const res = await fetch("http://localhost:8000/api/posts", { next: { revalidate: 60 } });
-    if (!res.ok) return mockNews;
-    const data = await res.json();
+    const data = await api.getPosts();
     return data.length > 0 ? data : mockNews;
   } catch (err) {
     console.error("Failed to fetch posts, using mockNews fallback:", err);

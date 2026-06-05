@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { mockNews } from '@/data/mockData';
+import { api } from '@/services/api';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -9,9 +10,7 @@ interface Props {
 
 async function getPost(slug: string) {
   try {
-    const res = await fetch(`http://localhost:8000/api/posts/${slug}`, { next: { revalidate: 60 } });
-    if (!res.ok) return null;
-    return res.json();
+    return await api.getPost(slug);
   } catch (err) {
     console.error(`Failed to fetch post detail ${slug}:`, err);
     return null;
@@ -20,9 +19,7 @@ async function getPost(slug: string) {
 
 async function getPosts() {
   try {
-    const res = await fetch("http://localhost:8000/api/posts", { next: { revalidate: 60 } });
-    if (!res.ok) return mockNews;
-    const data = await res.json();
+    const data = await api.getPosts();
     return data.length > 0 ? data : mockNews;
   } catch (err) {
     console.error("Failed to fetch posts:", err);

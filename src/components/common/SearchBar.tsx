@@ -2,9 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { mockProjects } from '@/data/mockData';
+import type { Project } from '@/data/mockData';
 
-export default function SearchBar() {
+interface SearchBarProps {
+  projects: Project[];
+}
+
+export default function SearchBar({ projects }: SearchBarProps) {
   const router = useRouter();
   const [project, setProject] = useState('');
   const [type, setType] = useState('');
@@ -35,7 +39,7 @@ export default function SearchBar() {
             className="w-full bg-white text-brand-brown border border-brand-gray-medium focus:border-brand-brown rounded-none px-3 py-2.5 text-sm focus:outline-none transition-colors appearance-none cursor-pointer"
           >
             <option value="">Tất cả dự án</option>
-            {mockProjects.map((p) => (
+            {projects.map((p) => (
               <option key={p.slug} value={p.slug}>
                 {p.name}
               </option>
