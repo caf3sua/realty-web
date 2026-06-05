@@ -3,7 +3,19 @@ import Link from 'next/link';
 import SearchBar from '@/components/common/SearchBar';
 import { mockProjects, mockProducts, mockNews } from '@/data/mockData';
 
-export default function Home() {
+async function getPosts() {
+  try {
+    const res = await fetch("http://localhost:8000/api/posts", { next: { revalidate: 60 } });
+    if (!res.ok) return mockNews;
+    const data = await res.json();
+    return data.length > 0 ? data : mockNews;
+  } catch (err) {
+    console.error("Failed to fetch posts, using mockNews fallback:", err);
+    return mockNews;
+  }
+}
+
+export default async function Home() {
   // Get featured projects
   const featuredProjects = mockProjects.slice(0, 3);
 
@@ -14,7 +26,8 @@ export default function Home() {
   const premiumProducts = mockProducts.filter(p => p.isPremium).slice(0, 3);
 
   // Get latest news
-  const latestNews = mockNews.slice(0, 3);
+  const allNews = await getPosts();
+  const latestNews = allNews.slice(0, 3);
 
   return (
     <div className="space-y-24 pb-20 bg-white">
@@ -286,7 +299,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {latestNews.map((news) => (
+          {latestNews.map((news: any) => (
             <Link
               href={`/tin-tuc/${news.slug}`}
               key={news.id}

@@ -2,7 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { mockNews } from '@/data/mockData';
 
-export default function NewsPage() {
+async function getPosts() {
+  try {
+    const res = await fetch("http://localhost:8000/api/posts", { next: { revalidate: 60 } });
+    if (!res.ok) return mockNews;
+    const data = await res.json();
+    return data.length > 0 ? data : mockNews;
+  } catch (err) {
+    console.error("Failed to fetch posts, using mockNews fallback:", err);
+    return mockNews;
+  }
+}
+
+export default async function NewsPage() {
+  const posts = await getPosts();
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
@@ -17,7 +30,7 @@ export default function NewsPage() {
 
       {/* News Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {mockNews.map((news) => (
+        {posts.map((news: any) => (
           <Link
             href={`/tin-tuc/${news.slug}`}
             key={news.id}

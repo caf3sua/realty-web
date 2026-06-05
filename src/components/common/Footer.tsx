@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SuccessModal from './SuccessModal';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <footer className="bg-brand-brown text-brand-cream/80 pt-16 pb-8 border-t border-brand-brown">
@@ -15,14 +18,14 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
               <Image
-                src="/images/logo-blue.png"
+                src="/images/logo-yellow.png"
                 alt="Anh Duong Property Logo"
                 width={36}
                 height={36}
                 className="object-contain"
               />
               <span className="text-xl font-bold text-white font-serif tracking-wider group-hover:text-brand-cream transition-colors">
-                ANH DUONG PROPERTY
+                ANH DUONG <span className="text-[0.8em] font-medium tracking-wide">PROPERTY</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-brand-cream/60">
@@ -112,7 +115,7 @@ export default function Footer() {
             <p className="text-sm text-brand-cream/60">
               Đăng ký để nhận báo giá mới nhất, chính sách ưu đãi trực tiếp từ chủ đầu tư.
             </p>
-            <form onSubmit={(e) => { e.preventDefault(); alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ sớm nhất.'); }} className="flex flex-col gap-2">
+            <form onSubmit={(e) => { e.preventDefault(); setShowModal(true); }} className="flex flex-col gap-2">
               <input
                 type="email"
                 placeholder="Nhập email của bạn..."
@@ -135,13 +138,19 @@ export default function Footer() {
             <p className="font-semibold text-white">Thông tin liên hệ:</p>
             <p>Cơ sở 1: Khu Sao biển 9A-SP9A-10 Khu đô thị Vinhomes Ocean Park Gia Lâm Hà Nội</p>
             <p>Cơ sở 2: Khu Sao biển không số, số nhà 215 Khu đô thị Vinhomes Ocean Park 2, Hưng Yên.</p>
-            <p>Tel: <a href="tel:0938129969" className="text-white font-bold hover:underline">0938 129 969</a> | Mail: <a href="mailto:anhduong.bds@gmail.com" className="hover:text-white hover:underline">anhduong.bds@gmail.com</a> | Website: <a href="https://nhadepvinhome.org" target="_blank" rel="noreferrer" className="hover:text-white hover:underline">nhadepvinhome.org</a></p>
+            <p>Tel: <a href="tel:0938129969" className="text-white font-bold hover:underline">0938 129 969</a> | Mail: <a href="mailto:duongstchanoi@gmail.com" className="hover:text-white hover:underline">duongstchanoi@gmail.com</a> | Website: <a href="https://nhadepvinhomes.online" target="_blank" rel="noreferrer" className="hover:text-white hover:underline">nhadepvinhomes.online</a></p>
           </div>
           <p className="text-brand-cream/40 shrink-0">
             &copy; {currentYear} ANH DUONG PROPERTY. Bảo lưu mọi quyền.
           </p>
         </div>
       </div>
+      <SuccessModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Đăng ký nhận tin thành công"
+        message="Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất."
+      />
     </footer>
   );
 }

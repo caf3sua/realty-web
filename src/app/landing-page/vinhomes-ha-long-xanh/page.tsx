@@ -1,9 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import SuccessModal from '@/components/common/SuccessModal';
 
 export default function HaLongXanhLandingPage() {
+  const [showModal, setShowModal] = useState(false);
   const specs = [
     { title: 'Tổng Diện Tích', value: '4.109 Hécta', desc: 'Một trong những siêu dự án lớn nhất miền Bắc' },
     { title: 'Tổng Vốn Đầu Tư', value: '10 Tỷ USD', desc: 'Đại đô thị sinh thái kết hợp nghỉ dưỡng' },
@@ -210,7 +213,7 @@ export default function HaLongXanhLandingPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              alert('Cảm ơn quý khách! Chuyên viên kinh doanh Vinhomes sẽ liên hệ hỗ trợ gửi tài liệu qua Zalo/Email ngay.');
+              setShowModal(true);
             }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10 max-w-xl mx-auto"
           >
@@ -242,6 +245,12 @@ export default function HaLongXanhLandingPage() {
         </div>
       </section>
 
+      <SuccessModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Đăng ký nhận tài liệu thành công"
+        message="Cảm ơn quý khách! Chuyên viên kinh doanh Vinhomes sẽ liên hệ hỗ trợ gửi tài liệu qua Zalo/Email ngay."
+      />
     </div>
   );
 }

@@ -19,6 +19,9 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   title: "Anh Duong Property - Sàn Bất Động Sản Cao Cấp",
   description: "Chuyên phân phối, ký gửi biệt thự, liền kề, căn hộ hạng sang tại Vinhomes Ocean Park, Vinhomes Hạ Long Xanh và các dự án cao cấp khác.",
+  icons: {
+    icon: "/images/logo-blue.png",
+  },
 };
 
 export default function RootLayout({

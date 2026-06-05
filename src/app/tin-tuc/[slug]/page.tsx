@@ -7,16 +7,45 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+async function getPost(slug: string) {
+  try {
+    const res = await fetch(`http://localhost:8000/api/posts/${slug}`, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    return res.json();
+  } catch (err) {
+    console.error(`Failed to fetch post detail ${slug}:`, err);
+    return null;
+  }
+}
+
+async function getPosts() {
+  try {
+    const res = await fetch("http://localhost:8000/api/posts", { next: { revalidate: 60 } });
+    if (!res.ok) return mockNews;
+    const data = await res.json();
+    return data.length > 0 ? data : mockNews;
+  } catch (err) {
+    console.error("Failed to fetch posts:", err);
+    return mockNews;
+  }
+}
+
 export default async function NewsDetailPage({ params }: Props) {
   const { slug } = await params;
-  const news = mockNews.find((n) => n.slug === slug);
+  
+  // Try fetching from live database API, fallback to mockData
+  let news = await getPost(slug);
+  if (!news) {
+    news = mockNews.find((n) => n.slug === slug) || null;
+  }
 
   if (!news) {
     notFound();
   }
 
   // Find other recent news
-  const otherNews = mockNews.filter((n) => n.id !== news.id).slice(0, 3);
+  const allNews = await getPosts();
+  const otherNews = allNews.filter((n: any) => n.id !== news.id && n.slug !== news.slug).slice(0, 3);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 bg-white">
@@ -64,7 +93,7 @@ export default async function NewsDetailPage({ params }: Props) {
           <h3 className="text-xl font-serif text-brand-brown font-semibold">Tin Tức Liên Quan</h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {otherNews.map((n) => (
+            {otherNews.map((n: any) => (
               <Link
                 href={`/tin-tuc/${n.slug}`}
                 key={n.id}

@@ -53,7 +53,7 @@ export default function Header() {
               className="object-contain"
             />
             <span className="text-xl lg:text-2xl font-bold text-brand-brown font-serif tracking-wider group-hover:text-brand-taupe transition-colors">
-              ANH DUONG PROPERTY
+              ANH DUONG <span className="text-[0.8em] font-medium tracking-wide">PROPERTY</span>
             </span>
           </Link>
 

@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import SuccessModal from './SuccessModal';
 
 export default function ContactForm() {
+  const [showModal, setShowModal] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('Cảm ơn quý khách! Yêu cầu tư vấn của quý khách đã được ghi nhận. Chuyên viên sẽ gọi điện tư vấn trong vòng 15 phút.');
+    setShowModal(true);
   };
 
   return (
@@ -33,6 +35,12 @@ export default function ContactForm() {
       >
         Gửi Yêu Cầu
       </button>
+      <SuccessModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title="Gửi yêu cầu thành công"
+        message="Cảm ơn quý khách! Yêu cầu tư vấn của quý khách đã được ghi nhận. Chuyên viên sẽ gọi điện tư vấn trong thời gian sớm nhất."
+      />
     </form>
   );
 }
