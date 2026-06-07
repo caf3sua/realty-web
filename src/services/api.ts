@@ -66,5 +66,37 @@ export const api = {
     const res = await fetch(`${API_BASE_URL}/posts/${slug}`, { next: { revalidate: 60 } } as any);
     if (!res.ok) throw new Error(`Failed to fetch post with slug: ${slug}`);
     return res.json();
+  },
+
+  async subscribeNewsletter(email: string): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/crm/newsletters`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || 'Đăng ký nhận tin tức thất bại.');
+    }
+    return res.json();
+  },
+
+  async createAdvisory(data: {
+    name: string;
+    phone: string;
+    details: string;
+    productSlug?: string;
+    productName?: string;
+  }): Promise<any> {
+    const res = await fetch(`${API_BASE_URL}/crm/advisories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || 'Gửi yêu cầu tư vấn thất bại.');
+    }
+    return res.json();
   }
 };

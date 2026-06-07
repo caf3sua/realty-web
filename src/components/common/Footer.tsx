@@ -4,10 +4,35 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SuccessModal from './SuccessModal';
+import { subscribeNewsletterAction } from '@/app/actions';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await subscribeNewsletterAction(email);
+      if (res.success) {
+        setShowModal(true);
+        setEmail('');
+      } else {
+        setError(res.error || 'Đăng ký thất bại, vui lòng thử lại.');
+      }
+    } catch (err) {
+      setError('Lỗi kết nối mạng, vui lòng thử lại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <footer className="bg-brand-brown text-brand-cream/80 pt-16 pb-8 border-t border-brand-brown">
@@ -115,18 +140,25 @@ export default function Footer() {
             <p className="text-sm text-brand-cream/60">
               Đăng ký để nhận báo giá mới nhất, chính sách ưu đãi trực tiếp từ chủ đầu tư.
             </p>
-            <form onSubmit={(e) => { e.preventDefault(); setShowModal(true); }} className="flex flex-col gap-2">
+            {error && (
+              <p className="text-xs text-red-400 font-semibold">{error}</p>
+            )}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <input
                 type="email"
                 placeholder="Nhập email của bạn..."
                 required
-                className="bg-white border border-brand-gray-medium rounded-none px-4 py-2.5 text-sm text-brand-brown focus:outline-none focus:border-brand-brown placeholder-brand-gray-text transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="bg-white border border-brand-gray-medium rounded-none px-4 py-2.5 text-sm text-brand-brown focus:outline-none focus:border-brand-brown placeholder-brand-gray-text transition-colors disabled:opacity-60"
               />
               <button
                 type="submit"
-                className="bg-brand-taupe hover:bg-brand-darkbrown text-white font-bold py-2.5 rounded-none text-sm transition-all cursor-pointer"
+                disabled={loading}
+                className="bg-brand-taupe hover:bg-brand-darkbrown text-white font-bold py-2.5 rounded-none text-sm transition-all cursor-pointer disabled:bg-brand-taupe/50 disabled:cursor-not-allowed"
               >
-                Đăng Ký Ngay
+                {loading ? 'Đang gửi...' : 'Đăng Ký Ngay'}
               </button>
             </form>
           </div>

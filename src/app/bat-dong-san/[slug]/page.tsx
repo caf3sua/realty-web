@@ -197,7 +197,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
             <div className="border-t border-brand-gray-light pt-6 space-y-4">
               <h4 className="text-xs font-bold text-brand-brown uppercase tracking-wider text-center">Yêu cầu tư vấn chi tiết</h4>
-              <ContactForm />
+              <ContactForm productSlug={product.slug} productName={product.title} />
             </div>
           </div>
         </div>
