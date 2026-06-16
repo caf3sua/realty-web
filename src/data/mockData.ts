@@ -1,3 +1,11 @@
+export interface Amenity {
+  id: string;
+  name: string;
+  product_type: 'all' | 'apartment' | 'villa' | 'townhouse' | 'shophouse';
+  icon?: string;
+  is_active: boolean;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -34,6 +42,7 @@ export interface Product {
   status: 'Còn hàng' | 'Đã cọc' | 'Đã bán' | 'Đang bán' | 'Sắp mở bán';
   direction: string;
   legal: string;
+  amenities?: { id: string; name: string; icon?: string; }[];
 }
 
 export interface NewsPost {

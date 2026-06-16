@@ -16,6 +16,7 @@ export default async function ProductDetailPage({ params }: Props) {
   let product: Product | null = null;
   let project: Project | null = null;
   let relatedProducts: Product[] = [];
+  let productAmenities: any[] = [];
 
   try {
     product = await api.getProduct(slug);
@@ -27,6 +28,7 @@ export default async function ProductDetailPage({ params }: Props) {
         api.getProducts({ product_type: product.productType })
       ]);
       project = projectRes;
+      productAmenities = product.amenities || [];
       relatedProducts = productsRes
         .filter((p) => p.slug !== product!.slug)
         .slice(0, 4);
@@ -145,19 +147,25 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           {/* Amenities */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-serif text-brand-brown font-semibold">Tiện Ích Nổi Bật</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {['An ninh 24/7', 'Khuôn viên xanh', 'Bể bơi cao cấp', 'Khu vui chơi trẻ em', 'Hầm đỗ xe thông minh', 'Sảnh lounge tiếp khách'].map((amenity) => (
-                <div key={amenity} className="flex items-center gap-2 text-sm text-brand-brown bg-brand-cream border border-brand-gray-medium px-4 py-3 rounded-none">
-                  <svg className="w-4 h-4 text-brand-taupe shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{amenity}</span>
-                </div>
-              ))}
+          {productAmenities.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-serif text-brand-brown font-semibold">Tiện Ích Nổi Bật</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {productAmenities.map((amenity) => (
+                  <div key={amenity.id} className="flex items-center gap-2 text-sm text-brand-brown bg-brand-cream border border-brand-gray-medium px-4 py-3 rounded-none">
+                    {amenity.icon ? (
+                      <img src={amenity.icon} alt={amenity.name} className="w-4 h-4 object-contain shrink-0 opacity-70" />
+                    ) : (
+                      <svg className="w-4 h-4 text-brand-taupe shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                    <span>{amenity.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Right column: Sticky Form */}

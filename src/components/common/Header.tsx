@@ -25,13 +25,13 @@ export default function Header() {
   const navItems = [
     { name: 'Dự án', path: '/du-an' },
     { name: 'Sản phẩm', path: '/san-pham' },
-    { name: 'Phân khúc cao cấp', path: '/cao-cap' },
+    { name: 'Sản phẩm hot', path: '/san-pham-hot' },
     { name: 'Tin tức', path: '/tin-tuc' },
   ];
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/';
-    return pathname.startsWith(path);
+    return pathname === path || pathname.startsWith(`${path}/`);
   };
 
   return (

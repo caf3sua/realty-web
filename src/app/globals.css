@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* Font Stacks */
+  /* Font Stacks & Sizes */
   --font-serif: "SVN-Cera", var(--font-playfair), Georgia, serif;
   --font-sans: "Neurial Grotesk", var(--font-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --text-xs: 13px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 15px;
+  --text-sm--line-height: 1.5;
 
   /* Brand Earthy Tones & Accent Colors */
   --color-brand-brown: #472D0A;

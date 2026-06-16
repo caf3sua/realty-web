@@ -1,4 +1,4 @@
-import type { Project, Product, Developer } from '@/data/mockData';
+import type { Project, Product, Developer, Amenity } from '@/data/mockData';
 
 const API_BASE_URL = process.env.API_URL || 'http://localhost:8000/api';
 
@@ -21,6 +21,7 @@ export const api = {
     product_type?: string;
     developer?: string;
     is_premium?: boolean;
+    is_hot?: boolean;
     project_slug?: string;
   }): Promise<Product[]> {
     const query = new URLSearchParams();
@@ -28,6 +29,7 @@ export const api = {
       if (params.product_type) query.append('product_type', params.product_type);
       if (params.developer) query.append('developer', params.developer);
       if (params.is_premium !== undefined) query.append('is_premium', String(params.is_premium));
+      if (params.is_hot !== undefined) query.append('is_hot', String(params.is_hot));
       if (params.project_slug) query.append('project_slug', params.project_slug);
     }
     const queryString = query.toString() ? `?${query.toString()}` : '';
@@ -97,6 +99,13 @@ export const api = {
       const errData = await res.json().catch(() => ({}));
       throw new Error(errData.detail || 'Gửi yêu cầu tư vấn thất bại.');
     }
+    return res.json();
+  },
+
+  // Amenities
+  async getAmenities(): Promise<Amenity[]> {
+    const res = await fetch(`${API_BASE_URL}/amenities`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch amenities');
     return res.json();
   }
 };
