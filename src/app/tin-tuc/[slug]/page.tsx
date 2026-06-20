@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { mockNews } from '@/data/mockData';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -56,7 +57,7 @@ export default async function NewsDetailPage({ params }: Props) {
       </Link>
 
       {/* Article Header */}
-      <div className="space-y-4">
+      <FadeIn className="space-y-4">
         <div className="flex items-center gap-3 text-xs font-bold text-brand-taupe uppercase tracking-wider">
           <span>{news.category}</span>
           <span className="w-1.5 h-1.5 rounded-full bg-brand-gray-medium" />
@@ -65,10 +66,10 @@ export default async function NewsDetailPage({ params }: Props) {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-brand-brown font-bold leading-snug">
           {news.title}
         </h1>
-      </div>
+      </FadeIn>
 
       {/* Featured Image */}
-      <div className="relative h-[250px] sm:h-[400px] rounded-none overflow-hidden border border-brand-gray-medium">
+      <FadeIn className="relative h-[250px] sm:h-[400px] rounded-none overflow-hidden border border-brand-gray-medium">
         <Image
           src={news.image}
           alt={news.title}
@@ -76,27 +77,31 @@ export default async function NewsDetailPage({ params }: Props) {
           priority
           className="object-cover"
         />
-      </div>
+      </FadeIn>
 
       {/* Article Content */}
-      <article
-        className="prose prose-neutral max-w-none text-brand-verydark text-sm sm:text-base leading-relaxed space-y-6"
-        dangerouslySetInnerHTML={{ __html: news.content }}
-      />
+      <FadeIn>
+        <article
+          className="prose prose-neutral max-w-none text-brand-verydark text-sm sm:text-base leading-relaxed space-y-6"
+          dangerouslySetInnerHTML={{ __html: news.content }}
+        />
+      </FadeIn>
 
       {/* Other suggestions */}
       {otherNews.length > 0 && (
         <section className="pt-12 border-t border-brand-gray-light space-y-6">
-          <h3 className="text-xl font-serif text-brand-brown font-semibold">Tin Tức Liên Quan</h3>
+          <FadeIn>
+            <h3 className="text-xl font-serif text-brand-brown font-semibold">Tin Tức Liên Quan</h3>
+          </FadeIn>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {otherNews.map((n: any) => (
-              <Link
-                href={`/tin-tuc/${n.slug}`}
-                key={n.id}
-                className="group space-y-3 block"
-              >
-                <div className="relative h-32 w-full rounded-none overflow-hidden border border-brand-gray-medium">
+              <StaggerItem key={n.id}>
+                <Link
+                  href={`/tin-tuc/${n.slug}`}
+                  className="group space-y-3 block"
+                >
+                  <div className="relative h-32 w-full rounded-none overflow-hidden border border-brand-gray-medium">
                   <Image
                     src={n.image}
                     alt={n.title}
@@ -109,8 +114,9 @@ export default async function NewsDetailPage({ params }: Props) {
                 </h4>
                 <span className="text-[10px] text-brand-gray-text">{n.publishedAt}</span>
               </Link>
+            </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </section>
       )}
 

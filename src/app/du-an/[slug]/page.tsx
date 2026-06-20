@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { api } from '@/services/api';
 import type { Project, Product } from '@/data/mockData';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,7 +42,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           <div className="absolute inset-0 bg-gradient-to-t from-brand-verydark/80 via-brand-verydark/55 to-brand-verydark/20" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <FadeIn className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-3xl space-y-4">
             <span className="text-[10px] bg-brand-brown/85 border border-brand-brown text-white px-3 py-1 rounded-none font-semibold tracking-wider uppercase">
               {project.status}
@@ -57,12 +58,12 @@ export default async function ProjectDetailPage({ params }: Props) {
               {project.location}
             </p>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* 2. Project Details & Info */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <FadeIn className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Main Info */}
           <div className="lg:col-span-2 space-y-6">
             <h2 className="text-2xl font-serif text-brand-brown font-semibold">Tổng Quan Dự Án</h2>
@@ -94,23 +95,25 @@ export default async function ProjectDetailPage({ params }: Props) {
               </li>
             </ul>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* 3. Filtered Products Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-serif text-brand-brown font-semibold mb-8">
-          Giỏ Hàng Đang Mở Bán ({projectProducts.length})
-        </h2>
+        <FadeIn>
+          <h2 className="text-2xl font-serif text-brand-brown font-semibold mb-8">
+            Giỏ Hàng Đang Mở Bán ({projectProducts.length})
+          </h2>
+        </FadeIn>
 
         {projectProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {projectProducts.map((product) => (
-              <Link
-                href={`/bat-dong-san/${product.slug}`}
-                key={product.slug}
-                className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
-              >
+              <StaggerItem key={product.slug}>
+                <Link
+                  href={`/bat-dong-san/${product.slug}`}
+                  className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
+                >
                 {/* Image */}
                 <div className="relative h-48 w-full overflow-hidden">
                   <Image
@@ -159,11 +162,12 @@ export default async function ProjectDetailPage({ params }: Props) {
                     </div>
                   </div>
                 </div>
-              </Link>
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         ) : (
-          <div className="bg-brand-cream border border-brand-gray-medium p-12 rounded-none text-center">
+          <FadeIn className="bg-brand-cream border border-brand-gray-medium p-12 rounded-none text-center">
             <p className="text-brand-gray-text text-sm">Hiện tại chưa có giỏ hàng bất động sản nào đang mở bán trực tuyến cho dự án này.</p>
             <Link
               href="#contact-form"
@@ -171,7 +175,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             >
               Liên Hệ Nhận Giỏ Hàng Ngoại Giao
             </Link>
-          </div>
+          </FadeIn>
         )}
       </section>
 

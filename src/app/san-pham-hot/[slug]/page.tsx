@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { api } from '@/services/api';
 import type { Product } from '@/data/mockData';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -70,7 +71,7 @@ export default async function HotBrandPage({ params }: Props) {
           <div className="absolute inset-0 bg-gradient-to-t from-brand-verydark/80 via-brand-verydark/55 to-brand-verydark/20" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <FadeIn className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-3xl space-y-4">
             <span className="text-[10px] bg-rose-600 border border-rose-600 text-white px-3 py-1 rounded-none font-semibold tracking-wider uppercase">
               Chủ đầu tư HOT
@@ -82,23 +83,25 @@ export default async function HotBrandPage({ params }: Props) {
               {brandInfo.desc}
             </p>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* 2. Listings Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white">
-        <h2 className="text-2xl font-serif text-brand-brown font-semibold mb-8">
-          Sản Phẩm Hot Đang Phân Phối ({brandProducts.length})
-        </h2>
+        <FadeIn>
+          <h2 className="text-2xl font-serif text-brand-brown font-semibold mb-8">
+            Sản Phẩm Hot Đang Phân Phối ({brandProducts.length})
+          </h2>
+        </FadeIn>
 
         {brandProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {brandProducts.map((product) => (
-              <Link
-                href={`/bat-dong-san/${product.slug}`}
-                key={product.slug}
-                className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
-              >
+              <StaggerItem key={product.slug}>
+                <Link
+                  href={`/bat-dong-san/${product.slug}`}
+                  className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
+                >
                 <div className="relative h-56 w-full overflow-hidden">
                   <Image
                     src={product.images[0]}
@@ -146,13 +149,14 @@ export default async function HotBrandPage({ params }: Props) {
                     </div>
                   </div>
                 </div>
-              </Link>
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         ) : (
-          <div className="bg-brand-cream border border-brand-gray-medium p-12 rounded-none text-center">
+          <FadeIn className="bg-brand-cream border border-brand-gray-medium p-12 rounded-none text-center">
             <p className="text-brand-gray-text text-sm">Hiện tại chưa có giỏ hàng bất động sản hot nào đang mở bán trực tuyến cho thương hiệu này.</p>
-          </div>
+          </FadeIn>
         )}
       </section>
 

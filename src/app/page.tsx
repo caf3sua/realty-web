@@ -3,6 +3,7 @@ import Link from 'next/link';
 import SearchBar from '@/components/common/SearchBar';
 import { mockNews } from '@/data/mockData';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 export default async function Home() {
   // Fetch projects and products from the service
@@ -21,7 +22,7 @@ export default async function Home() {
     }
   }
   // Get featured projects
-  const featuredProjects = projects.slice(0, 3);
+  const featuredProjects = projects.slice(0, 6);
 
   // Get featured products
   const featuredProducts = products.slice(0, 4);
@@ -37,7 +38,7 @@ export default async function Home() {
   const latestNews = allNews.slice(0, 3);
 
   return (
-    <div className="space-y-24 pb-20 bg-white">
+    <div className="pb-20 bg-white">
 
       {/* 1. Hero Section */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
@@ -57,7 +58,7 @@ export default async function Home() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center gap-8">
+        <FadeIn className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center gap-8">
           <span className="text-amber-400 text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase animate-fade-in">
             Phong Cách Sống Đẳng Cấp & Độc Bản
           </span>
@@ -73,68 +74,112 @@ export default async function Home() {
 
           {/* Search Bar Component */}
           <SearchBar projects={projects} />
-        </div>
+        </FadeIn>
       </section>
 
       {/* 2. Highlight Projects Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
-          <div>
-            <span className="text-brand-brown text-xs font-bold tracking-widest uppercase">Danh Mục Dự Án</span>
-            <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Dự Án Trọng Điểm</h2>
-          </div>
-          <Link
-            href="/du-an"
-            className="text-brand-brown hover:text-brand-taupe text-sm font-semibold flex items-center gap-1.5 transition-colors"
-          >
-            Xem tất cả dự án
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
+      <section
+        className="relative py-20 overflow-hidden !mt-0"
+        style={{ backgroundColor: '#FDFAF5' }}
+      >
+        {/* Subtle texture overlay */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #f5efe6 0%, #FDFAF5 50%, #f0e8da 100%)', opacity: 0.98 }} />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProjects.map((project) => (
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <FadeIn className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
+            <div>
+              <span className="text-brand-taupe text-xs font-bold tracking-[0.25em] uppercase">Danh Mục Dự Án</span>
+              <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Dự Án Trọng Điểm</h2>
+            </div>
             <Link
-              href={`/du-an/${project.slug}`}
-              key={project.id}
-              className="group relative h-[420px] rounded-none overflow-hidden border border-brand-gray-light flex flex-col justify-end p-6 transition-all duration-500 hover:border-brand-taupe/30 hover:shadow-2xl"
+              href="/du-an"
+              className="text-brand-brown hover:text-brand-taupe text-sm font-semibold flex items-center gap-1.5 transition-colors border border-brand-brown/40 hover:border-brand-taupe px-4 py-2"
             >
-              {/* Background image */}
-              <Image
-                src={project.image}
-                alt={project.name}
-                fill
-                className="object-cover object-center z-0 transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-verydark via-brand-verydark/50 to-transparent z-10" />
-
-              {/* Card info */}
-              <div className="relative z-20 space-y-3">
-                <span className="text-[10px] bg-brand-brown/85 border border-brand-brown text-white px-2 py-0.5 rounded-none font-semibold tracking-wider uppercase">
-                  {project.status}
-                </span>
-                <h3 className="text-xl font-serif font-bold text-white group-hover:text-brand-cream transition-colors">
-                  <span className="bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent">{project.name}</span>
-                </h3>
-                <p className="text-brand-cream/80 text-xs line-clamp-2">
-                  {project.shortDescription}
-                </p>
-                <div className="flex justify-between items-center text-xs text-brand-cream/90 pt-2 border-t border-white/10">
-                  <span>Quy mô: {project.scale}</span>
-                  <span className="font-semibold text-brand-cream">{project.priceRange}</span>
-                </div>
-              </div>
+              Xem tất cả dự án
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
-          ))}
+          </FadeIn>
+
+          {/* Mosaic Layout: 3 columns — left small, center large, right small */}
+          <StaggerContainer className="flex flex-col md:flex-row gap-4 items-center justify-center">
+
+            {/* Left column — 2 small cards */}
+            <StaggerItem className="flex flex-col gap-4 w-full md:w-1/4">
+              {featuredProjects[0] && (
+                <Link href={`/du-an/${featuredProjects[0].slug}`} className="relative h-[220px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[0].image} alt={featuredProjects[0].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
+                    <h3 className="!text-white font-black text-lg uppercase tracking-wider leading-tight drop-shadow-lg text-center">{featuredProjects[0].name}</h3>
+                  </div>
+                </Link>
+              )}
+              {featuredProjects[1] && (
+                <Link href={`/du-an/${featuredProjects[1].slug}`} className="relative h-[220px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[1].image} alt={featuredProjects[1].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
+                    <h3 className="!text-white font-black text-lg uppercase tracking-wider leading-tight drop-shadow-lg text-center">{featuredProjects[1].name}</h3>
+                  </div>
+                </Link>
+              )}
+            </StaggerItem>
+
+            {/* Center column — 2 large cards */}
+            <StaggerItem className="flex flex-col gap-4 w-full md:w-2/4">
+              {featuredProjects[2] && (
+                <Link href={`/du-an/${featuredProjects[2].slug}`} className="relative h-[320px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[2].image} alt={featuredProjects[2].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 flex justify-center">
+                    <h3 className="!text-white font-black text-2xl uppercase tracking-widest leading-tight drop-shadow-xl text-center">{featuredProjects[2].name}</h3>
+                  </div>
+                </Link>
+              )}
+              {featuredProjects[3] && (
+                <Link href={`/du-an/${featuredProjects[3].slug}`} className="relative h-[320px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[3].image} alt={featuredProjects[3].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 flex justify-center">
+                    <h3 className="!text-white font-black text-2xl uppercase tracking-widest leading-tight drop-shadow-xl text-center">{featuredProjects[3].name}</h3>
+                  </div>
+                </Link>
+              )}
+            </StaggerItem>
+
+            {/* Right column — 2 small cards */}
+            <StaggerItem className="flex flex-col gap-4 w-full md:w-1/4">
+              {featuredProjects[4] && (
+                <Link href={`/du-an/${featuredProjects[4].slug}`} className="relative h-[220px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[4].image} alt={featuredProjects[4].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
+                    <h3 className="!text-white font-black text-lg uppercase tracking-wider leading-tight drop-shadow-lg text-center">{featuredProjects[4].name}</h3>
+                  </div>
+                </Link>
+              )}
+              {featuredProjects[5] && (
+                <Link href={`/du-an/${featuredProjects[5].slug}`} className="relative h-[220px] rounded-3xl overflow-hidden group cursor-pointer block border-2 border-transparent hover:border-white/60 transition-all duration-300">
+                  <Image src={featuredProjects[5].image} alt={featuredProjects[5].name} fill className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3d2e1a]/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
+                    <h3 className="!text-white font-black text-lg uppercase tracking-wider leading-tight drop-shadow-lg text-center">{featuredProjects[5].name}</h3>
+                  </div>
+                </Link>
+              )}
+            </StaggerItem>
+
+          </StaggerContainer>
         </div>
       </section>
 
       {/* 2.5 Hot Products Grid */}
       {displayHotProducts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+          <FadeIn className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
             <div>
               <span className="text-brand-brown text-xs font-bold tracking-widest uppercase">Tuyển Chọn Đặc Biệt</span>
               <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Bất Động Sản Hot</h2>
@@ -148,13 +193,13 @@ export default async function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
               </svg>
             </Link>
-          </div>
+          </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayHotProducts.map((product) => (
-              <Link
-                href={`/bat-dong-san/${product.slug}`}
-                key={product.slug}
+              <StaggerItem key={product.slug}>
+                <Link
+                  href={`/bat-dong-san/${product.slug}`}
                 className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
               >
                 {/* Product Image */}
@@ -206,14 +251,15 @@ export default async function Home() {
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
-        </section>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </section>
       )}
 
       {/* 3. Featured Products Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+        <FadeIn className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
           <div>
             <span className="text-brand-brown text-xs font-bold tracking-widest uppercase">Giỏ Hàng Mới Nhất</span>
             <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Bất Động Sản Nổi Bật</h2>
@@ -227,13 +273,13 @@ export default async function Home() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
           </Link>
-        </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <Link
-              href={`/bat-dong-san/${product.slug}`}
-              key={product.slug}
+            <StaggerItem key={product.slug}>
+              <Link
+                href={`/bat-dong-san/${product.slug}`}
               className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
             >
               {/* Product Image */}
@@ -285,24 +331,25 @@ export default async function Home() {
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
+          </StaggerItem>
+        ))}
+        </StaggerContainer>
       </section>
 
       {/* 4. Premium Segment Section (Masterise, MIK) */}
-      <section className="bg-brand-cream py-24 border-y border-brand-gray-light">
+      <section className="bg-brand-cream py-24 border-y border-brand-gray-light mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <FadeIn className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <span className="text-brand-taupe text-xs font-bold tracking-[0.2em] uppercase">Phân Khúc Bất Động Sản Siêu Sang</span>
             <h2 className="text-3xl sm:text-4xl font-serif text-brand-brown font-semibold">Thương Hiệu Danh Giá</h2>
             <p className="text-brand-gray-text text-sm">
               Khám phá các tổ hợp căn hộ, biệt thự mang thương hiệu cao cấp từ Masterise Homes và MIK Group, khẳng định vị thế chủ nhân sở hữu.
             </p>
-          </div>
+          </FadeIn>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Masterise Brand Spotlight */}
-            <div className="bg-white border border-brand-gray-medium p-8 rounded-none flex flex-col justify-between gap-8 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
+            <StaggerItem className="bg-white border border-brand-gray-medium p-8 rounded-none flex flex-col justify-between gap-8 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
               <div className="space-y-4">
                 <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">Masterise Homes</span>
                 <h3 className="text-2xl font-serif text-brand-brown font-medium">Bất Động Sản Hàng Hiệu</h3>
@@ -316,10 +363,10 @@ export default async function Home() {
               >
                 Khám Phá Giỏ Hàng Masterise
               </Link>
-            </div>
+            </StaggerItem>
 
             {/* MIK Group Spotlight */}
-            <div className="bg-white border border-brand-gray-medium p-8 rounded-none flex flex-col justify-between gap-8 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
+            <StaggerItem className="bg-white border border-brand-gray-medium p-8 rounded-none flex flex-col justify-between gap-8 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
               <div className="space-y-4">
                 <span className="text-xs text-brand-taupe font-bold tracking-widest uppercase">MIK Group</span>
                 <h3 className="text-2xl font-serif text-brand-brown font-medium">Không Gian Sống Độc Bản</h3>
@@ -333,10 +380,10 @@ export default async function Home() {
               >
                 Khám Phá Giỏ Hàng MIK
               </Link>
-            </div>
+            </StaggerItem>
 
             {/* Premium product showcase card */}
-            <div className="bg-white rounded-none border border-brand-gray-medium overflow-hidden flex flex-col hover:border-brand-taupe transition-all duration-300">
+            <StaggerItem className="bg-white rounded-none border border-brand-gray-medium overflow-hidden flex flex-col hover:border-brand-taupe transition-all duration-300">
               <div className="relative h-48 w-full">
                 <Image
                   src={premiumProducts[0]?.images[0] || '/images/hero-bg.png'}
@@ -362,14 +409,14 @@ export default async function Home() {
                   </Link>
                 </div>
               </div>
-            </div>
-          </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* 5. News & Market Insights */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+        <FadeIn className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
           <div>
             <span className="text-brand-brown text-xs font-bold tracking-widest uppercase">Tin Tức Địa Ốc</span>
             <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Thị Trường & Xu Hướng</h2>
@@ -383,13 +430,13 @@ export default async function Home() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
           </Link>
-        </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {latestNews.map((news: any) => (
-            <Link
-              href={`/tin-tuc/${news.slug}`}
-              key={news.id}
+            <StaggerItem key={news.id}>
+              <Link
+                href={`/tin-tuc/${news.slug}`}
               className="group bg-white border border-brand-gray-medium rounded-none overflow-hidden hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-sm"
             >
               {/* News Image */}
@@ -425,8 +472,9 @@ export default async function Home() {
                 </span>
               </div>
             </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
     </div>

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   searchParams: Promise<{
@@ -77,7 +78,7 @@ export default async function ProductsPage({ searchParams }: Props) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
       {/* Header */}
-      <div className="border-b border-brand-gray-medium pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <FadeIn className="border-b border-brand-gray-medium pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <span className="text-brand-taupe text-xs font-bold tracking-widest uppercase">Giỏ hàng toàn thị trường</span>
           <h1 className="text-4xl font-serif text-brand-brown font-semibold mt-2">Danh Sách Bất Động Sản</h1>
@@ -95,13 +96,14 @@ export default async function ProductsPage({ searchParams }: Props) {
             Xóa Bộ Lọc
           </Link>
         )}
-      </div>
+      </FadeIn>
 
       {/* Grid List */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
-            <Link
+            <StaggerItem key={product.slug}>
+              <Link
               href={`/bat-dong-san/${product.slug}`}
               key={product.slug}
               className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
@@ -153,10 +155,11 @@ export default async function ProductsPage({ searchParams }: Props) {
                 </div>
               </div>
             </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       ) : (
-        <div className="bg-brand-cream border border-brand-gray-medium p-16 rounded-none text-center space-y-4 max-w-xl mx-auto">
+        <FadeIn className="bg-brand-cream border border-brand-gray-medium p-16 rounded-none text-center space-y-4 max-w-xl mx-auto">
           <svg className="w-12 h-12 text-brand-gray-text mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -170,7 +173,7 @@ export default async function ProductsPage({ searchParams }: Props) {
           >
             Xem Tất Cả Sản Phẩm
           </Link>
-        </div>
+        </FadeIn>
       )}
 
     </div>

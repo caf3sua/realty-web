@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { mockNews } from '@/data/mockData';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 async function getPosts() {
   try {
@@ -19,22 +20,22 @@ export default async function NewsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
       {/* Header */}
-      <div className="border-b border-brand-gray-medium pb-8">
+      <FadeIn className="border-b border-brand-gray-medium pb-8">
         <span className="text-brand-taupe text-xs font-bold tracking-widest uppercase">Tin tức & phân tích</span>
         <h1 className="text-4xl font-serif text-brand-brown font-semibold mt-2">Tin Tức Bất Động Sản</h1>
         <p className="text-brand-gray-text text-sm mt-3 max-w-2xl leading-relaxed">
           Cập nhật nhanh chóng, chính xác về tiến độ các dự án, xu hướng thị trường và cẩm nang pháp lý hữu ích cho nhà đầu tư.
         </p>
-      </div>
+      </FadeIn>
 
       {/* News Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((news: any) => (
-          <Link
-            href={`/tin-tuc/${news.slug}`}
-            key={news.id}
-            className="group bg-white border border-brand-gray-medium rounded-none overflow-hidden hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-sm"
-          >
+          <StaggerItem key={news.id}>
+            <Link
+              href={`/tin-tuc/${news.slug}`}
+              className="group bg-white border border-brand-gray-medium rounded-none overflow-hidden hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-sm"
+            >
             {/* Image */}
             <div className="relative h-56 w-full overflow-hidden">
               <Image
@@ -68,9 +69,10 @@ export default async function NewsPage() {
                 </svg>
               </span>
             </div>
-          </Link>
+            </Link>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
 
     </div>
   );

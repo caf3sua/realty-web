@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 export default async function ProjectsPage() {
   const projects = await api.getProjects();
@@ -8,18 +9,19 @@ export default async function ProjectsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
       {/* Page Header */}
-      <div className="border-b border-brand-gray-medium pb-8">
+      <FadeIn className="border-b border-brand-gray-medium pb-8">
         <span className="text-brand-taupe text-xs font-bold tracking-widest uppercase">Danh mục đô thị</span>
         <h1 className="text-4xl font-serif text-brand-brown font-semibold mt-2">Dự Án Bất Động Sản</h1>
         <p className="text-brand-gray-text text-sm mt-3 max-w-2xl leading-relaxed">
           Tổng hợp các đại đô thị thông minh, tổ hợp chung cư cao cấp và khu nghỉ dưỡng sinh thái hàng đầu miền Bắc.
         </p>
-      </div>
+      </FadeIn>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Projects Grid */}
+      <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project) => (
-          <div
+          <StaggerItem
             key={project.id}
             className="group bg-white border border-brand-gray-medium hover:border-brand-taupe rounded-none overflow-hidden flex flex-col h-full transition-all duration-300 hover:shadow-lg"
           >
@@ -77,9 +79,9 @@ export default async function ProjectsPage() {
                 </Link>
               </div>
             </div>
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
 
     </div>
   );

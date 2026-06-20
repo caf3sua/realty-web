@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { api } from '@/services/api';
 import type { Product } from '@/data/mockData';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -54,23 +55,23 @@ export default async function ProductCategoryPage({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
       
       {/* Header */}
-      <div className="border-b border-brand-gray-medium pb-8">
+      <FadeIn className="border-b border-brand-gray-medium pb-8">
         <span className="text-brand-taupe text-xs font-bold tracking-widest uppercase">Phân loại sản phẩm</span>
         <h1 className="text-4xl font-serif text-brand-brown font-semibold mt-2">{categoryInfo.name}</h1>
         <p className="text-brand-gray-text text-sm mt-3 max-w-2xl leading-relaxed">
           {categoryInfo.desc} ({categoryProducts.length} kết quả đang mở bán)
         </p>
-      </div>
+      </FadeIn>
 
       {/* Grid List */}
       {categoryProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categoryProducts.map((product) => (
-            <Link
-              href={`/bat-dong-san/${product.slug}`}
-              key={product.slug}
-              className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
-            >
+            <StaggerItem key={product.slug}>
+              <Link
+                href={`/bat-dong-san/${product.slug}`}
+                className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
+              >
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
                   src={product.images[0]}
@@ -117,11 +118,12 @@ export default async function ProductCategoryPage({ params }: Props) {
                   </div>
                 </div>
               </div>
-            </Link>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       ) : (
-        <div className="bg-brand-cream border border-brand-gray-medium p-16 rounded-none text-center space-y-4 max-w-xl mx-auto">
+        <FadeIn className="bg-brand-cream border border-brand-gray-medium p-16 rounded-none text-center space-y-4 max-w-xl mx-auto">
           <p className="text-brand-gray-text text-sm">Hiện tại chưa có giỏ hàng bất động sản nào đang mở bán trực tuyến cho phân loại này.</p>
           <Link
             href="/san-pham"
@@ -129,7 +131,7 @@ export default async function ProductCategoryPage({ params }: Props) {
           >
             Xem Tất Cả Sản Phẩm
           </Link>
-        </div>
+        </FadeIn>
       )}
 
     </div>

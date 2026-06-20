@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 export default async function LuxurySegmentPage() {
   // Fetch developers and premium products from the API
@@ -14,7 +15,7 @@ export default async function LuxurySegmentPage() {
       
       {/* 1. Header Banner */}
       <section className="relative py-24 border-b border-brand-gray-light bg-brand-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <FadeIn className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <span className="text-brand-taupe text-xs font-bold tracking-[0.3em] uppercase">Premium Showcase</span>
           <h1 className="text-4xl sm:text-5xl font-serif text-brand-brown font-extrabold tracking-wide">
             Bất Động Sản Cao Cấp
@@ -22,15 +23,17 @@ export default async function LuxurySegmentPage() {
           <p className="text-brand-gray-text text-sm max-w-2xl mx-auto leading-relaxed">
             Nơi hội tụ những bộ sưu tập dinh thự độc bản, biệt thự biển thượng lưu và căn hộ hàng hiệu được phát triển bởi các tập đoàn uy tín hàng đầu Việt Nam.
           </p>
-        </div>
+        </FadeIn>
       </section>
 
       {/* 2. Luxury Brands Spotlight */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
-        <h2 className="text-2xl font-serif text-brand-brown font-semibold text-center">Chủ Đầu Tư Danh Giá</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <FadeIn>
+          <h2 className="text-2xl font-serif text-brand-brown font-semibold text-center">Chủ Đầu Tư Danh Giá</h2>
+        </FadeIn>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {developers.map((dev) => (
-            <div key={dev.id} className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
+            <StaggerItem key={dev.id} className="bg-white border border-brand-gray-medium rounded-none p-8 flex flex-col justify-between gap-6 hover:border-brand-taupe transition-all duration-300 hover:shadow-sm">
               <div className="space-y-4">
                 <div className="h-10 flex items-center justify-start mb-2">
                   <img
@@ -51,24 +54,26 @@ export default async function LuxurySegmentPage() {
               >
                 {dev.linkText}
               </Link>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
       {/* 3. Premium Products List */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8 bg-white">
-        <h2 className="text-2xl font-serif text-brand-brown font-semibold border-b border-brand-gray-medium pb-4">
-          Bộ Sưu Tập Giới Hạn ({premiumProducts.length} sản phẩm)
-        </h2>
+        <FadeIn>
+          <h2 className="text-2xl font-serif text-brand-brown font-semibold border-b border-brand-gray-medium pb-4">
+            Bộ Sưu Tập Giới Hạn ({premiumProducts.length} sản phẩm)
+          </h2>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {premiumProducts.map((product) => (
-            <Link
-              href={`/bat-dong-san/${product.slug}`}
-              key={product.slug}
-              className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
-            >
+            <StaggerItem key={product.slug}>
+              <Link
+                href={`/bat-dong-san/${product.slug}`}
+                className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
+              >
               <div className="relative h-60 w-full overflow-hidden">
                 <Image
                   src={product.images[0]}
@@ -116,9 +121,10 @@ export default async function LuxurySegmentPage() {
                   </div>
                 </div>
               </div>
-            </Link>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
     </div>

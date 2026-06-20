@@ -5,6 +5,7 @@ import { api } from '@/services/api';
 import type { Product, Project } from '@/data/mockData';
 import ContactForm from '@/components/common/ContactForm';
 import ProductGallery from '@/components/common/ProductGallery';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -61,10 +62,12 @@ export default async function ProductDetailPage({ params }: Props) {
       </nav>
 
       {/* 2. Image Gallery */}
-      <ProductGallery images={product.images} title={product.title} />
+      <FadeIn>
+        <ProductGallery images={product.images} title={product.title} />
+      </FadeIn>
 
       {/* 3. Main Info Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <FadeIn className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Left column: specs and description */}
         <div className="lg:col-span-2 space-y-10">
           {/* Header info */}
@@ -209,17 +212,18 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </FadeIn>
 
       {/* 4. Related Products */}
       {relatedProducts.length > 0 && (
         <section className="pt-12 border-t border-brand-gray-light space-y-8">
           <h2 className="text-2xl font-serif text-brand-brown font-semibold">Sản Phẩm Tương Tự</h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((prod) => (
-              <Link
-                href={`/bat-dong-san/${prod.slug}`}
+              <StaggerItem key={prod.slug}>
+                <Link
+                  href={`/bat-dong-san/${prod.slug}`}
                 key={prod.slug}
                 className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg hover:-translate-y-1"
               >
@@ -243,9 +247,10 @@ export default async function ProductDetailPage({ params }: Props) {
                     <span className="text-brand-taupe font-bold text-sm">{formatPrice(prod.price)}</span>
                   </div>
                 </div>
-              </Link>
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </section>
       )}
 

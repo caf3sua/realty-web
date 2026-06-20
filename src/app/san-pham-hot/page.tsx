@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/services/api';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 export default async function HotProductsPage() {
   // Fetch hot products from the API
@@ -11,7 +12,7 @@ export default async function HotProductsPage() {
       
       {/* 1. Header Banner */}
       <section className="relative py-24 border-b border-brand-gray-light bg-brand-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <FadeIn className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <span className="text-brand-taupe text-xs font-bold tracking-[0.3em] uppercase">Hot Products Showcase</span>
           <h1 className="text-4xl sm:text-5xl font-serif text-brand-brown font-extrabold tracking-wide">
             Sản Phẩm Đang Hot
@@ -19,23 +20,25 @@ export default async function HotProductsPage() {
           <p className="text-brand-gray-text text-sm max-w-2xl mx-auto leading-relaxed">
             Danh sách các sản phẩm bất động sản đang được quan tâm nhiều nhất, tiềm năng sinh lời cao và thanh khoản nhanh chóng.
           </p>
-        </div>
+        </FadeIn>
       </section>
 
 
       {/* 3. Premium Products List */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8 bg-white">
-        <h2 className="text-2xl font-serif text-brand-brown font-semibold border-b border-brand-gray-medium pb-4">
-          Danh Sách Sản Phẩm Hot ({hotProducts.length} sản phẩm)
-        </h2>
+        <FadeIn>
+          <h2 className="text-2xl font-serif text-brand-brown font-semibold border-b border-brand-gray-medium pb-4">
+            Danh Sách Sản Phẩm Hot ({hotProducts.length} sản phẩm)
+          </h2>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {hotProducts.map((product) => (
-            <Link
-              href={`/bat-dong-san/${product.slug}`}
-              key={product.slug}
-              className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
-            >
+            <StaggerItem key={product.slug}>
+              <Link
+                href={`/bat-dong-san/${product.slug}`}
+                className="group bg-white rounded-none overflow-hidden border border-brand-gray-medium hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-lg"
+              >
               <div className="relative h-60 w-full overflow-hidden">
                 <Image
                   src={product.images[0]}
@@ -83,9 +86,10 @@ export default async function HotProductsPage() {
                   </div>
                 </div>
               </div>
-            </Link>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
     </div>
