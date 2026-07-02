@@ -416,14 +416,42 @@ export default async function Home() {
 
       {/* 5. News & Market Insights */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-        <FadeIn className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
-          <div>
-            <span className="text-brand-brown text-xs font-bold tracking-widest uppercase">Tin Tức Địa Ốc</span>
-            <h2 className="text-3xl font-serif text-brand-brown font-semibold mt-2">Thị Trường & Xu Hướng</h2>
-          </div>
+        <FadeIn className="text-center mb-12 space-y-2">
+          <span className="text-brand-taupe text-xs font-bold tracking-[0.25em] uppercase">Tin Tức Địa Ốc</span>
+          <h2 className="text-3xl sm:text-4xl font-serif text-brand-brown font-bold uppercase tracking-wide">
+            Thị Trường &amp; Xu Hướng
+          </h2>
+        </FadeIn>
+
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestNews.map((news: any) => (
+            <StaggerItem key={news.id}>
+              <Link href={`/tin-tuc/${news.slug}`} className="group block">
+                {/* News Image */}
+                <div className="relative h-72 w-full overflow-hidden">
+                  <Image
+                    src={news.image}
+                    alt={news.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Caption — below the image */}
+                <div className="pt-5">
+                  <h3 className="text-brand-brown font-semibold text-base leading-snug line-clamp-2">
+                    {news.title}
+                  </h3>
+                </div>
+              </Link>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
+        <FadeIn className="flex justify-center mt-12">
           <Link
             href="/tin-tuc"
-            className="text-brand-brown hover:text-brand-taupe text-sm font-semibold flex items-center gap-1.5 transition-colors"
+            className="border border-brand-brown text-brand-brown text-xs font-bold tracking-[0.2em] uppercase px-6 py-3 flex items-center gap-2 hover:bg-brand-brown hover:text-white transition-colors"
           >
             Xem tất cả tin tức
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -431,50 +459,6 @@ export default async function Home() {
             </svg>
           </Link>
         </FadeIn>
-
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {latestNews.map((news: any) => (
-            <StaggerItem key={news.id}>
-              <Link
-                href={`/tin-tuc/${news.slug}`}
-              className="group bg-white border border-brand-gray-medium rounded-none overflow-hidden hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-sm"
-            >
-              {/* News Image */}
-              <div className="relative h-48 w-full overflow-hidden">
-                <Image
-                  src={news.image}
-                  alt={news.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              {/* News Content */}
-              <div className="p-5 flex flex-col justify-between flex-grow gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3 text-[10px] font-bold text-brand-taupe uppercase tracking-wider">
-                    <span>{news.category}</span>
-                    <span className="w-1 h-1 rounded-full bg-brand-gray-medium" />
-                    <span className="text-brand-gray-text font-medium">{news.publishedAt}</span>
-                  </div>
-                  <h3 className="text-sm font-semibold text-brand-brown group-hover:text-brand-taupe transition-colors line-clamp-2 leading-snug font-serif font-bold">
-                    {news.title}
-                  </h3>
-                  <p className="text-brand-gray-text text-xs line-clamp-3 leading-relaxed">
-                    {news.summary}
-                  </p>
-                </div>
-                <span className="text-xs text-brand-brown font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Đọc thêm
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </div>
-            </Link>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
       </section>
 
     </div>
