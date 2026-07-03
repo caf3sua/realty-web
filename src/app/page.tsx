@@ -428,18 +428,18 @@ export default async function Home() {
             <StaggerItem key={news.id}>
               <Link href={`/tin-tuc/${news.slug}`} className="group block">
                 {/* News Image */}
-                <div className="relative h-72 w-full overflow-hidden">
+                <div className="relative aspect-video w-full overflow-hidden">
                   <Image
                     src={news.image}
                     alt={news.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-350 ease-in-out group-hover:scale-110"
                   />
                 </div>
 
-                {/* Caption — below the image */}
-                <div className="pt-5">
-                  <h3 className="text-brand-brown font-semibold text-base leading-snug line-clamp-2">
+                {/* Caption — background/text sync with the overlay so the brown flows down from the image */}
+                <div className="bg-white group-hover:bg-brand-brown p-5 transition-colors duration-350 ease-in-out">
+                  <h3 className="text-left font-bold text-brand-brown group-hover:text-white text-base leading-snug line-clamp-2 transition-colors duration-350 ease-in-out">
                     {news.title}
                   </h3>
                 </div>

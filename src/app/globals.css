@@ -40,18 +40,20 @@ body {
 }
 
 /* Elegant default styling for headings and texts */
-h1,
-h2 {
-  font-family: var(--font-serif);
-  color: var(--color-brand-brown);
-}
+@layer base {
+  h1,
+  h2 {
+    font-family: var(--font-serif);
+    color: var(--color-brand-brown);
+  }
 
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-sans);
-  color: var(--color-brand-brown);
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    color: var(--color-brand-brown);
+  }
 }
 
 a {
