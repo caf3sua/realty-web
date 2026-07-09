@@ -75,7 +75,7 @@ export default function HaLongXanhLandingPage() {
   ];
 
   return (
-    <div className="bg-white text-brand-verydark min-h-screen space-y-24 pb-20">
+    <div className="bg-white text-brand-verydark min-h-screen space-y-24 pt-20 pb-20">
       
       {/* 1. Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">

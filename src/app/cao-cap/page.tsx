@@ -11,7 +11,7 @@ export default async function LuxurySegmentPage() {
   ]);
 
   return (
-    <div className="bg-white text-brand-verydark min-h-screen">
+    <div className="bg-white text-brand-verydark min-h-screen pt-20">
       
       {/* 1. Header Banner */}
       <section className="relative py-24 border-b border-brand-gray-light bg-brand-cream">

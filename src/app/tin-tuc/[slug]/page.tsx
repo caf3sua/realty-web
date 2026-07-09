@@ -46,7 +46,7 @@ export default async function NewsDetailPage({ params }: Props) {
   const otherNews = allNews.filter((n: any) => n.id !== news.id && n.slug !== news.slug).slice(0, 3);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 bg-white">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 space-y-12 bg-white">
       
       {/* Back link */}
       <Link href="/tin-tuc" className="text-xs text-brand-gray-text hover:text-brand-taupe flex items-center gap-1.5 transition-colors font-semibold">

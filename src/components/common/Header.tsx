@@ -1,26 +1,41 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { useLenis } from '@/components/scroll/SmoothScrollProvider';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
+  const lenis = useLenis();
+
+  // Trang có hero full-screen tối → header trong suốt chữ sáng khi ở đỉnh
+  const isImmersiveRoute = pathname === '/' || /^\/du-an\/[^/]+$/.test(pathname);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+    const onScroll = (scrollY: number) => {
+      setIsScrolled(scrollY > 80);
+      // Ẩn khi cuộn xuống, hiện khi cuộn lên (chỉ sau khi qua hero một đoạn)
+      const goingDown = scrollY > lastScrollY.current;
+      setIsHidden(goingDown && scrollY > 400 && !isOpen);
+      lastScrollY.current = scrollY;
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+
+    if (lenis) {
+      const handler = ({ scroll }: { scroll: number }) => onScroll(scroll);
+      lenis.on('scroll', handler);
+      return () => lenis.off('scroll', handler);
+    }
+    // Fallback native scroll (reduced-motion không có Lenis)
+    const handler = () => onScroll(window.scrollY);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, [lenis, isOpen]);
 
   const navItems = [
     { name: 'Dự án', path: '/du-an' },
@@ -34,25 +49,40 @@ export default function Header() {
     return pathname === path || pathname.startsWith(`${path}/`);
   };
 
+  // 2 trạng thái màu: "light" (transparent trên hero tối) / "solid"
+  const isLight = isImmersiveRoute && !isScrolled && !isOpen;
+
+  const linkBase = isLight
+    ? 'text-brand-cream hover:text-white'
+    : 'text-brand-brown hover:text-brand-taupe';
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-white/95 backdrop-blur-md border-b border-brand-gray-medium shadow-sm py-3'
-        : 'bg-white border-b border-brand-gray-light py-4'
-        }`}
+      data-scrolled={isScrolled}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 will-change-transform ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
+      } ${
+        isLight
+          ? 'bg-transparent border-b border-white/10 py-4'
+          : 'bg-brand-cream/85 backdrop-blur-md border-b border-brand-gray-medium shadow-sm py-3'
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/images/logo-blue.png"
+              src={isLight ? '/images/logo-yellow.png' : '/images/logo-blue.png'}
               alt="Anh Duong Property Logo"
               width={36}
               height={36}
               className="object-contain"
             />
-            <span className="text-xl lg:text-2xl font-bold text-brand-brown font-serif tracking-wider group-hover:text-brand-taupe transition-colors">
+            <span
+              className={`text-xl lg:text-2xl font-bold font-serif tracking-wider transition-colors ${
+                isLight ? 'text-white group-hover:text-brand-cream' : 'text-brand-brown group-hover:text-brand-taupe'
+              }`}
+            >
               ANH DUONG <span className="text-[0.8em] font-medium tracking-wide">PROPERTY</span>
             </span>
           </Link>
@@ -63,17 +93,22 @@ export default function Header() {
               <Link
                 key={item.path}
                 href={item.path}
-                className={`text-sm font-medium tracking-wide transition-colors py-1 border-b-2 ${isActive(item.path)
-                  ? 'text-brand-taupe border-brand-taupe font-semibold'
-                  : 'text-brand-brown border-transparent hover:text-brand-taupe'
-                  }`}
+                className={`text-sm font-medium tracking-wide transition-colors py-1 border-b-2 ${
+                  isActive(item.path)
+                    ? `${isLight ? 'text-white border-white' : 'text-brand-taupe border-brand-taupe'} font-semibold`
+                    : `${linkBase} border-transparent`
+                }`}
               >
                 {item.name}
               </Link>
             ))}
             <Link
               href="/landing-page/vinhomes-ha-long-xanh"
-              className="text-xs uppercase bg-brand-cream text-brand-brown hover:bg-brand-brown hover:text-white border border-brand-brown px-3 py-1.5 rounded-none font-semibold tracking-wider transition-all"
+              className={`text-xs uppercase px-3 py-1.5 rounded-none font-semibold tracking-wider transition-all border ${
+                isLight
+                  ? 'bg-white/10 text-white border-white/40 hover:bg-white hover:text-brand-brown'
+                  : 'bg-brand-cream text-brand-brown border-brand-brown hover:bg-brand-brown hover:text-white'
+              }`}
             >
               Hạ Long Xanh
             </Link>
@@ -83,10 +118,10 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <a
               href="tel:0919936576"
-              className="text-brand-brown hover:text-brand-taupe flex items-center gap-2 text-sm font-semibold transition-colors"
+              className={`flex items-center gap-2 text-sm font-semibold transition-colors ${linkBase}`}
             >
               <svg
-                className="w-4 h-4 text-brand-taupe animate-pulse"
+                className={`w-4 h-4 animate-pulse ${isLight ? 'text-brand-cream' : 'text-brand-taupe'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -103,15 +138,21 @@ export default function Header() {
             <Link
               href="#contact-form"
               onClick={(e) => {
-                if (pathname === '/' || pathname.startsWith('/landing-page/')) {
-                  const target = document.getElementById('contact-form');
-                  if (target) {
-                    e.preventDefault();
+                const target = document.getElementById('contact-form');
+                if (target) {
+                  e.preventDefault();
+                  if (lenis) {
+                    lenis.scrollTo(target, { offset: -100 });
+                  } else {
                     target.scrollIntoView({ behavior: 'smooth' });
                   }
                 }
               }}
-              className="bg-brand-brown border-2 border-brand-brown text-white font-medium px-5 py-2 rounded-none text-sm hover:bg-brand-taupe hover:border-brand-taupe transition-all duration-300"
+              className={`font-medium px-5 py-2 rounded-none text-sm transition-all duration-300 border-2 ${
+                isLight
+                  ? 'bg-transparent border-white text-white hover:bg-white hover:text-brand-brown'
+                  : 'bg-brand-brown border-brand-brown text-white hover:bg-brand-taupe hover:border-brand-taupe'
+              }`}
             >
               Nhận Bảng Giá
             </Link>
@@ -121,16 +162,20 @@ export default function Header() {
           <div className="flex items-center md:hidden gap-3">
             <Link
               href="/landing-page/vinhomes-ha-long-xanh"
-              className="text-[10px] uppercase bg-brand-cream text-brand-brown border border-brand-brown px-2 py-1 rounded-none font-semibold tracking-wider"
+              className={`text-[10px] uppercase px-2 py-1 rounded-none font-semibold tracking-wider border ${
+                isLight
+                  ? 'bg-white/10 text-white border-white/40'
+                  : 'bg-brand-cream text-brand-brown border-brand-brown'
+              }`}
             >
               Hạ Long Xanh
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="text-brand-brown hover:text-brand-taupe p-2 focus:outline-none"
+              className={`p-2 focus:outline-none transition-colors ${linkBase}`}
               aria-controls="mobile-menu"
-              aria-expanded="false"
+              aria-expanded={isOpen}
             >
               <span className="sr-only">Open main menu</span>
               {!isOpen ? (
@@ -149,17 +194,18 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-brand-gray-medium animate-fade-in" id="mobile-menu">
+        <div className="md:hidden bg-brand-cream border-b border-brand-gray-medium animate-fade-in" id="mobile-menu">
           <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2.5 rounded-none text-base font-medium transition-colors ${isActive(item.path)
-                  ? 'bg-brand-cream text-brand-taupe font-semibold'
-                  : 'text-brand-brown hover:bg-brand-cream'
-                  }`}
+                className={`block px-3 py-2.5 rounded-none text-base font-medium transition-colors ${
+                  isActive(item.path)
+                    ? 'bg-white text-brand-taupe font-semibold'
+                    : 'text-brand-brown hover:bg-white'
+                }`}
               >
                 {item.name}
               </Link>

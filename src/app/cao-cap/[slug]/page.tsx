@@ -56,7 +56,7 @@ export default async function LuxuryBrandPage({ params }: Props) {
   }
 
   return (
-    <div className="space-y-16 pb-20 bg-white">
+    <div className="space-y-16 pt-20 pb-20 bg-white">
       
       {/* 1. Brand Hero Banner */}
       <section className="relative h-[45vh] flex items-center overflow-hidden">

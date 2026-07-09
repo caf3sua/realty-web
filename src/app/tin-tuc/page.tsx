@@ -17,7 +17,7 @@ async function getPosts() {
 export default async function NewsPage() {
   const posts = await getPosts();
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12 bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-16 space-y-12 bg-white">
       
       {/* Header */}
       <FadeIn className="border-b border-brand-gray-medium pb-8">
