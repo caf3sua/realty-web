@@ -1,38 +1,22 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { useEffect, useRef } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import type { Project } from '@/data/mockData';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { splitIntoWords } from '@/lib/splitText';
-import { useReducedMotion, useIsMobile, isLowEndDevice } from '@/lib/useMotionPrefs';
-
-/** Fallback tĩnh: gradient hoàng hôn + noise (ssr / reduced-motion / máy yếu). */
-function HeroFallback() {
-  return (
-    <div className="absolute inset-0 noise-overlay bg-[radial-gradient(ellipse_at_bottom,_#5a3a10_0%,_#2a1a0c_45%,_#0d0805_100%)]" />
-  );
-}
-
-const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), {
-  ssr: false,
-  loading: () => <HeroFallback />,
-});
 
 export default function HeroSection({ projects }: { projects: Project[] }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const dimRef = useRef<HTMLDivElement>(null);
-  const scrollProgress = useRef(0);
+  const videoElRef = useRef<HTMLVideoElement>(null);
 
-  const reducedMotion = useReducedMotion();
-  const isMobile = useIsMobile();
-  const [webglOk, setWebglOk] = useState(false);
-
+  // Một số trình duyệt chặn autoplay dù đã muted — kick play chủ động
   useEffect(() => {
-    setWebglOk(!isLowEndDevice());
+    videoElRef.current?.play().catch(() => {});
   }, []);
 
   useGSAP(
@@ -51,8 +35,9 @@ export default function HeroSection({ projects }: { projects: Project[] }) {
             return;
           }
 
-          // 1. Intro timeline khi mount: headline split từng từ trượt lên
+          // 1. Intro khi mount: video zoom-out nhẹ + headline split từng từ trượt lên
           const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
+          intro.fromTo(videoRef.current, { scale: 1.15 }, { scale: 1.05, duration: 2 }, 0);
           if (headlineRef.current) {
             const { words, revert } = splitIntoWords(headlineRef.current);
             gsap.set(headlineRef.current, { opacity: 1 });
@@ -66,14 +51,15 @@ export default function HeroSection({ projects }: { projects: Project[] }) {
             0.9
           );
 
-          // 2. Scrub theo scroll: cập nhật progress cho camera + parallax content + tối dần
-          ScrollTrigger.create({
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-            onUpdate: (self) => {
-              scrollProgress.current = self.progress;
+          // 2. Scrub theo scroll: video parallax chậm, content trôi nhanh + fade, tối dần
+          gsap.to(videoRef.current, {
+            yPercent: 20,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
             },
           });
 
@@ -109,20 +95,24 @@ export default function HeroSection({ projects }: { projects: Project[] }) {
     { scope: sectionRef }
   );
 
-  const showCanvas = webglOk && !reducedMotion;
-
   return (
     <section ref={sectionRef} className="relative h-[130vh]">
-      {/* Canvas/fallback sticky full-screen */}
       <div className="sticky top-0 h-screen overflow-hidden">
-        {showCanvas ? (
-          <HeroCanvas scrollProgress={scrollProgress} lowQuality={isMobile} />
-        ) : (
-          <HeroFallback />
-        )}
+        {/* Video nền parallax */}
+        <div ref={videoRef} className="absolute inset-0 will-change-transform">
+          <video
+            ref={videoElRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-center"
+          >
+            <source src="/video/vinhome_haivanbay.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-verydark via-brand-verydark/60 to-brand-verydark/30" />
 
-        {/* Vignette đáy để text nổi */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0d0805]/90 via-transparent to-[#0d0805]/30" />
         {/* Lớp tối dần khi scroll chuyển sang manifesto */}
         <div ref={dimRef} className="absolute inset-0 pointer-events-none bg-[#0d0805] opacity-0" />
 
@@ -146,7 +136,7 @@ export default function HeroSection({ projects }: { projects: Project[] }) {
             </h1>
             <p
               data-hero-reveal
-              className="text-brand-cream/80 text-sm sm:text-base max-w-2xl leading-relaxed"
+              className="text-brand-cream/85 text-sm sm:text-base max-w-2xl leading-relaxed"
             >
               Khám phá các dự án đại đô thị sinh thái, biệt thự nghỉ dưỡng biển và căn hộ hạng sang
               được phân phối bởi những đơn vị uy tín hàng đầu Việt Nam.
