@@ -53,7 +53,8 @@ export interface NewsPost {
   content: string;
   image: string;
   publishedAt: string;
-  category: 'Thị trường' | 'Quy hoạch' | 'Cẩm nang' | 'Dự án';
+  category: 'Thị trường' | 'Quy hoạch' | 'Cẩm nang' | 'Dự án' | 'Mua bán';
+  tags?: string[];
 }
 
 export interface Developer {

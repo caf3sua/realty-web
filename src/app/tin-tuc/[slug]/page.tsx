@@ -85,6 +85,22 @@ export default async function NewsDetailPage({ params }: Props) {
           className="prose prose-neutral max-w-none text-brand-verydark text-sm sm:text-base leading-relaxed space-y-6"
           dangerouslySetInnerHTML={{ __html: news.content }}
         />
+
+        {news.tags && news.tags.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-brand-gray-light flex flex-wrap items-center gap-2">
+            <span className="text-xs font-bold text-brand-taupe uppercase tracking-wider">Thẻ (Tags):</span>
+            <div className="flex flex-wrap gap-2">
+              {news.tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-1 bg-brand-sand/50 text-brand-brown text-xs rounded border border-brand-gray-medium/60"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </FadeIn>
 
       {/* Other suggestions */}
