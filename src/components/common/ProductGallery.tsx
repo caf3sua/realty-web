@@ -6,9 +6,10 @@ import Image from 'next/image';
 interface ProductGalleryProps {
   images: string[];
   title: string;
+  updatedDate?: string;
 }
 
-export default function ProductGallery({ images, title }: ProductGalleryProps) {
+export default function ProductGallery({ images, title, updatedDate }: ProductGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -68,6 +69,11 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             priority
             className="object-cover transition-transform duration-500 group-hover:scale-103"
           />
+          {updatedDate && (
+            <span className="absolute top-4 right-4 bg-brand-cream/95 backdrop-blur-xs text-brand-brown text-xs font-semibold px-2.5 py-1 rounded-none border border-brand-gray-medium shadow-xs z-10">
+              {updatedDate}
+            </span>
+          )}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
         </div>
 

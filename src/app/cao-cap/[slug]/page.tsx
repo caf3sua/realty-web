@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { api } from '@/services/api';
 import type { Product } from '@/data/mockData';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
+import { formatProductDate } from '@/lib/formatDate';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -109,9 +110,14 @@ export default async function LuxuryBrandPage({ params }: Props) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute top-4 left-4 bg-brand-cream text-brand-brown text-[10px] font-bold px-2.5 py-0.5 rounded-none border border-brand-gray-medium">
+                  <span className="absolute top-4 left-4 bg-brand-cream text-brand-brown text-[10px] font-bold px-2.5 py-0.5 rounded-none border border-brand-gray-medium z-10">
                     {product.productTypeName}
                   </span>
+                  {formatProductDate(product.updatedAt || product.createdAt, product.id) && (
+                    <span className="absolute top-4 right-4 bg-brand-cream/95 backdrop-blur-xs text-brand-brown text-[10px] font-semibold px-2 py-0.5 rounded-none border border-brand-gray-medium shadow-xs z-10">
+                      {formatProductDate(product.updatedAt || product.createdAt, product.id)}
+                    </span>
+                  )}
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow justify-between gap-6">
@@ -133,12 +139,14 @@ export default async function LuxuryBrandPage({ params }: Props) {
 
                   <div className="space-y-4 pt-4 border-t border-brand-gray-light">
                     <div className="flex justify-between items-center text-xs text-brand-gray-text">
-                      <span>{product.area} m²</span>
+                      <span>{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
                       <span>{product.bedrooms} PN | {product.bathrooms} WC</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-brand-taupe font-bold text-lg">
-                        {product.price > 100 ? 'Liên hệ' : `${product.price} Tỷ`}
+                        {product.expectedPrice 
+                          ? product.expectedPrice 
+                          : (!product.price || product.price <= 0 || product.price > 100 ? 'Liên hệ' : `${product.price} Tỷ`)}
                       </span>
                       <span className="text-[10px] text-brand-gray-text uppercase tracking-widest font-semibold bg-brand-cream border border-brand-gray-medium px-2 py-0.5 rounded-none">
                         {product.status}

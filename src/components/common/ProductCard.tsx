@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/data/mockData';
 import { TiltCard } from '@/components/scroll/primitives';
+import { formatProductDate } from '@/lib/formatDate';
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +14,8 @@ interface ProductCardProps {
 
 /** Card sản phẩm chuẩn scroll-telling: 3D tilt + ảnh clip-reveal (do parent điều khiển). */
 export default function ProductCard({ product, badge = 'type' }: ProductCardProps) {
+  const updatedDateStr = formatProductDate(product.updatedAt || product.createdAt, product.id);
+
   return (
     <TiltCard className="h-full">
       <Link
@@ -40,8 +43,13 @@ export default function ProductCard({ product, badge = 'type' }: ProductCardProp
             </span>
           )}
           {product.isPremium && (
-            <span className="absolute top-3 right-3 bg-brand-brown text-white text-[9px] font-extrabold px-2 py-1 rounded-none shadow-md tracking-wider uppercase">
+            <span className="absolute top-10 left-3 bg-brand-brown text-white text-[9px] font-extrabold px-2 py-0.5 rounded-none shadow-md tracking-wider uppercase z-10">
               Premium
+            </span>
+          )}
+          {updatedDateStr && (
+            <span className="absolute top-3 right-3 bg-brand-cream/95 backdrop-blur-xs text-brand-brown text-[10px] font-semibold px-2 py-0.5 rounded-none border border-brand-gray-medium shadow-xs z-10">
+              {updatedDateStr}
             </span>
           )}
         </div>
@@ -62,12 +70,14 @@ export default function ProductCard({ product, badge = 'type' }: ProductCardProp
 
           <div className="space-y-3 pt-3 border-t border-brand-gray-light">
             <div className="flex justify-between items-center text-xs text-brand-gray-text">
-              <span>{product.area} m²</span>
+              <span>{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
               <span>{product.bedrooms} PN | {product.bathrooms} WC</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-brand-taupe font-bold text-base">
-                {product.price > 100 ? 'Liên hệ' : `${product.price} Tỷ`}
+                {product.expectedPrice 
+                  ? product.expectedPrice 
+                  : (!product.price || product.price <= 0 || product.price > 100 ? 'Liên hệ' : `${product.price} Tỷ`)}
               </span>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-widest font-semibold bg-brand-cream px-2 py-0.5 rounded-none border border-brand-gray-medium">
                 {product.status}

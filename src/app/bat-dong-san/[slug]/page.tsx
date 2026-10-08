@@ -6,6 +6,7 @@ import type { Product, Project } from '@/data/mockData';
 import ContactForm from '@/components/common/ContactForm';
 import ProductGallery from '@/components/common/ProductGallery';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
+import { formatProductDate } from '@/lib/formatDate';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -42,10 +43,13 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  const formatPrice = (val: number) => {
-    if (val > 100) return 'Liên hệ';
-    return `${val} Tỷ`;
+  const formatPrice = (item: { expectedPrice?: string; price?: number }) => {
+    if (item.expectedPrice) return item.expectedPrice;
+    if (!item.price || item.price <= 0 || item.price > 100) return 'Liên hệ';
+    return `${item.price} Tỷ`;
   };
+
+  const updatedDateStr = formatProductDate(product.updatedAt || product.createdAt, product.id);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 space-y-12 bg-white">
@@ -63,7 +67,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
       {/* 2. Image Gallery */}
       <FadeIn>
-        <ProductGallery images={product.images} title={product.title} />
+        <ProductGallery images={product.images} title={product.title} updatedDate={updatedDateStr} />
       </FadeIn>
 
       {/* 3. Main Info Section */}
@@ -72,40 +76,55 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="lg:col-span-2 space-y-10">
           {/* Header info */}
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-2 items-center">
-              <span className="bg-brand-cream border border-brand-gray-medium text-brand-brown text-xs font-semibold px-2.5 py-0.5 rounded-none">
-                {product.productTypeName}
-              </span>
-              {project && (
-                <Link
-                  href={`/du-an/${project.slug}`}
-                  className="bg-brand-cream border border-brand-gray-medium text-brand-brown hover:text-brand-taupe text-xs font-semibold px-2.5 py-0.5 rounded-none transition-colors"
-                >
-                  Dự án: {project.name}
-                </Link>
+            <div className="flex flex-wrap gap-2 items-center justify-between">
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="bg-brand-cream border border-brand-gray-medium text-brand-brown text-xs font-semibold px-2.5 py-0.5 rounded-none">
+                  {product.productTypeName}
+                </span>
+                {project && (
+                  <Link
+                    href={`/du-an/${project.slug}`}
+                    className="bg-brand-cream border border-brand-gray-medium text-brand-brown hover:text-brand-taupe text-xs font-semibold px-2.5 py-0.5 rounded-none transition-colors"
+                  >
+                    Dự án: {project.name}
+                  </Link>
+                )}
+              </div>
+              {updatedDateStr && (
+                <span className="text-xs text-brand-gray-text font-normal">
+                  Cập nhật: <span className="font-semibold text-brand-brown">{updatedDateStr}</span>
+                </span>
               )}
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif text-brand-brown font-bold leading-snug">
               {product.title}
             </h1>
-            <p className="text-brand-gray-text text-sm flex items-center gap-1.5">
-              <svg className="w-4 h-4 text-brand-gray-text shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              {product.location}
-            </p>
+            <div className="flex flex-wrap items-center gap-3 text-brand-gray-text text-sm">
+              <p className="flex items-center gap-1.5">
+                <svg className="w-4 h-4 text-brand-gray-text shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {product.location}
+              </p>
+              {updatedDateStr && (
+                <>
+                  <span className="text-brand-gray-medium">•</span>
+                  <span>Cập nhật: {updatedDateStr}</span>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Quick Specs Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 p-6 rounded-none bg-brand-cream border border-brand-gray-medium text-center">
             <div>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-wider block mb-1">Mức Giá</span>
-              <span className="text-brand-taupe font-bold text-lg">{formatPrice(product.price)}</span>
+              <span className="text-brand-taupe font-bold text-lg">{formatPrice(product)}</span>
             </div>
             <div>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-wider block mb-1">Diện Tích</span>
-              <span className="text-brand-brown font-bold text-lg">{product.area} m²</span>
+              <span className="text-brand-brown font-bold text-lg">{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
             </div>
             <div>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-wider block mb-1">Cơ Cấu PN/WC</span>
@@ -133,19 +152,24 @@ export default async function ProductDetailPage({ params }: Props) {
                 <span className="text-brand-gray-text">Đơn giá / m²:</span>
                 <span className="text-brand-brown font-medium">{product.pricePerSqm ? `${product.pricePerSqm} Triệu/m²` : 'Liên hệ'}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between border-b border-brand-gray-light pb-2 sm:border-0 sm:pb-0">
                 <span className="text-brand-gray-text">Trạng thái:</span>
                 <span className="text-brand-taupe font-semibold">{product.status}</span>
               </div>
+              {updatedDateStr && (
+                <div className="flex justify-between">
+                  <span className="text-brand-gray-text">Ngày cập nhật:</span>
+                  <span className="text-brand-brown font-medium">{updatedDateStr}</span>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-4">
             <h2 className="text-xl font-serif text-brand-brown font-semibold">Mô Tả Sản Phẩm</h2>
-            <div className="text-brand-gray-text text-sm leading-relaxed space-y-4">
-              <p>{product.description}</p>
-              <p>Sở hữu bất động sản này đồng nghĩa với việc gia chủ được thừa hưởng toàn bộ hạ tầng dịch vụ cao cấp nhất của khu vực xung quanh. Thiết kế kiến trúc sang trọng tối ưu công năng cùng phong thủy vượng khí mang tài lộc. Đây không chỉ là không gian sống mà còn là tài sản tích lũy an toàn và sinh dòng tiền cho chủ sở hữu tương lai.</p>
+            <div className="text-brand-gray-text text-sm leading-relaxed whitespace-pre-line">
+              {product.description || 'Đang cập nhật thông tin mô tả chi tiết cho sản phẩm này.'}
             </div>
           </div>
 
@@ -234,17 +258,22 @@ export default async function ProductDetailPage({ params }: Props) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute top-3 left-3 bg-brand-cream text-brand-brown text-[10px] font-bold px-2 py-0.5 rounded-none border border-brand-gray-medium">
+                  <span className="absolute top-3 left-3 bg-brand-cream text-brand-brown text-[10px] font-bold px-2 py-0.5 rounded-none border border-brand-gray-medium z-10">
                     {prod.productTypeName}
                   </span>
+                  {formatProductDate(prod.updatedAt || prod.createdAt, prod.id) && (
+                    <span className="absolute top-3 right-3 bg-brand-cream/95 backdrop-blur-xs text-brand-brown text-[10px] font-semibold px-2 py-0.5 rounded-none border border-brand-gray-medium shadow-xs z-10">
+                      {formatProductDate(prod.updatedAt || prod.createdAt, prod.id)}
+                    </span>
+                  )}
                 </div>
                 <div className="p-4 flex flex-col flex-grow justify-between gap-4">
                   <h3 className="text-xs font-semibold text-brand-brown line-clamp-2 group-hover:text-brand-taupe transition-colors leading-snug">
                     {prod.title}
                   </h3>
                   <div className="flex justify-between items-center text-[10px] text-brand-gray-text pt-2 border-t border-brand-gray-light">
-                    <span>{prod.area} m²</span>
-                    <span className="text-brand-taupe font-bold text-sm">{formatPrice(prod.price)}</span>
+                    <span>{prod.area && prod.area > 0 ? `${prod.area} m²` : 'Đang cập nhật'}</span>
+                    <span className="text-brand-taupe font-bold text-sm">{formatPrice(prod)}</span>
                   </div>
                 </div>
                 </Link>
