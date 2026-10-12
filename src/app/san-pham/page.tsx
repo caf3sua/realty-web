@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/services/api';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
-import { formatProductDate } from '@/lib/formatDate';
+import { formatProductDate, formatRooms } from '@/lib/formatDate';
 
 interface Props {
   searchParams: Promise<{
@@ -148,7 +148,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                 <div className="space-y-3 pt-3 border-t border-brand-gray-light">
                   <div className="flex justify-between items-center text-xs text-brand-gray-text">
                     <span>{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
-                    <span>{product.bedrooms} PN | {product.bathrooms} WC</span>
+                    <span>{formatRooms(product.bedrooms, product.bathrooms)}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-brand-taupe font-bold text-base">

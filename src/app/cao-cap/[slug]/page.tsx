@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { api } from '@/services/api';
 import type { Product } from '@/data/mockData';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
-import { formatProductDate } from '@/lib/formatDate';
+import { formatProductDate, formatRooms } from '@/lib/formatDate';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -140,7 +140,7 @@ export default async function LuxuryBrandPage({ params }: Props) {
                   <div className="space-y-4 pt-4 border-t border-brand-gray-light">
                     <div className="flex justify-between items-center text-xs text-brand-gray-text">
                       <span>{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
-                      <span>{product.bedrooms} PN | {product.bathrooms} WC</span>
+                      <span>{formatRooms(product.bedrooms, product.bathrooms)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-brand-taupe font-bold text-lg">

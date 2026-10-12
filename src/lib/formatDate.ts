@@ -41,3 +41,28 @@ export function formatProductDate(dateInput?: string | Date | null, id?: string)
   }
   return `${d}/${m}/${y}`;
 }
+
+/**
+ * Format bedrooms and bathrooms count.
+ * If 0 or not set, displays '-' instead of '0 PN' or '0 WC'.
+ * Examples:
+ * 4, 4 -> "4 PN | 4 WC"
+ * 0, 2 -> "- | 2 WC"
+ * 3, 0 -> "3 PN | -"
+ * 0, 0 -> "- | -"
+ */
+export function formatBedrooms(bedrooms?: number | null): string {
+  return bedrooms && bedrooms > 0 ? `${bedrooms} PN` : '-';
+}
+
+export function formatBathrooms(bathrooms?: number | null): string {
+  return bathrooms && bathrooms > 0 ? `${bathrooms} WC` : '-';
+}
+
+export function formatRooms(
+  bedrooms?: number | null,
+  bathrooms?: number | null,
+  separator: string = ' | '
+): string {
+  return `${formatBedrooms(bedrooms)}${separator}${formatBathrooms(bathrooms)}`;
+}

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/data/mockData';
 import { TiltCard } from '@/components/scroll/primitives';
-import { formatProductDate } from '@/lib/formatDate';
+import { formatProductDate, formatRooms } from '@/lib/formatDate';
 
 interface ProductCardProps {
   product: Product;
@@ -71,7 +71,7 @@ export default function ProductCard({ product, badge = 'type' }: ProductCardProp
           <div className="space-y-3 pt-3 border-t border-brand-gray-light">
             <div className="flex justify-between items-center text-xs text-brand-gray-text">
               <span>{product.area && product.area > 0 ? `${product.area} m²` : 'Đang cập nhật'}</span>
-              <span>{product.bedrooms} PN | {product.bathrooms} WC</span>
+              <span>{formatRooms(product.bedrooms, product.bathrooms)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-brand-taupe font-bold text-base">

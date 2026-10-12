@@ -6,7 +6,7 @@ import type { Product, Project } from '@/data/mockData';
 import ContactForm from '@/components/common/ContactForm';
 import ProductGallery from '@/components/common/ProductGallery';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
-import { formatProductDate } from '@/lib/formatDate';
+import { formatProductDate, formatRooms } from '@/lib/formatDate';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -128,7 +128,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
             <div>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-wider block mb-1">Cơ Cấu PN/WC</span>
-              <span className="text-brand-brown font-semibold text-base">{product.bedrooms} PN / {product.bathrooms} WC</span>
+              <span className="text-brand-brown font-semibold text-base">{formatRooms(product.bedrooms, product.bathrooms, ' / ')}</span>
             </div>
             <div>
               <span className="text-[10px] text-brand-gray-text uppercase tracking-wider block mb-1">Pháp Lý</span>
