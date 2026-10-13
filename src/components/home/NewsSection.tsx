@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import type { NewsPost } from '@/data/mockData';
 import { Reveal, RevealStagger, SplitTextReveal } from '@/components/scroll/primitives';
+import NewsCard from '@/components/common/NewsCard';
 
 /** Hồi 5b: tin tức — nền cream, cards reveal stagger. */
 export default function NewsSection({ news }: { news: NewsPost[] }) {
@@ -26,22 +26,7 @@ export default function NewsSection({ news }: { news: NewsPost[] }) {
 
         <RevealStagger className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.15}>
           {news.map((post) => (
-            <Link key={post.id} href={`/tin-tuc/${post.slug}`} className="group block">
-              <div className="relative aspect-video w-full overflow-hidden">
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                />
-              </div>
-              <div className="bg-white group-hover:bg-brand-brown p-5 transition-colors duration-350 ease-in-out">
-                <h3 className="text-left font-bold text-brand-brown group-hover:text-white text-base leading-snug line-clamp-2 transition-colors duration-350 ease-in-out">
-                  {post.title}
-                </h3>
-              </div>
-            </Link>
+            <NewsCard key={post.id} post={post} />
           ))}
         </RevealStagger>
 

@@ -1,8 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { mockNews } from '@/data/mockData';
 import { api } from '@/services/api';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
+import NewsCard from '@/components/common/NewsCard';
 
 async function getPosts() {
   try {
@@ -32,44 +31,7 @@ export default async function NewsPage() {
       <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((news: any) => (
           <StaggerItem key={news.id}>
-            <Link
-              href={`/tin-tuc/${news.slug}`}
-              className="group bg-white border border-brand-gray-medium rounded-none overflow-hidden hover:border-brand-taupe transition-all duration-300 flex flex-col h-full hover:shadow-sm"
-            >
-            {/* Image */}
-            <div className="relative h-56 w-full overflow-hidden">
-              <Image
-                src={news.image}
-                alt={news.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Content */}
-            <div className="p-6 flex flex-col justify-between flex-grow gap-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-[10px] font-bold text-brand-taupe uppercase tracking-wider">
-                  <span>{news.category}</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-gray-medium" />
-                  <span className="text-brand-gray-text font-medium">{news.publishedAt}</span>
-                </div>
-                <h2 className="text-base font-serif font-bold text-brand-brown group-hover:text-brand-taupe transition-colors line-clamp-2 leading-snug">
-                  {news.title}
-                </h2>
-                <p className="text-brand-gray-text text-xs line-clamp-3 leading-relaxed">
-                  {news.summary}
-                </p>
-              </div>
-              
-              <span className="text-xs text-brand-brown font-semibold flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
-                Chi tiết bài viết
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </div>
-            </Link>
+            <NewsCard post={news} />
           </StaggerItem>
         ))}
       </StaggerContainer>

@@ -66,3 +66,21 @@ export function formatRooms(
 ): string {
   return `${formatBedrooms(bedrooms)}${separator}${formatBathrooms(bathrooms)}`;
 }
+
+/**
+ * Format news published date (e.g., '2026-05-25' -> '25/05/2026').
+ * Preserves already formatted strings (e.g. '12/10/2026').
+ */
+export function formatNewsDate(dateInput?: string | Date | null): string {
+  if (!dateInput) return '';
+  if (typeof dateInput === 'string' && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateInput)) {
+    return dateInput;
+  }
+  const d = new Date(dateInput);
+  if (isNaN(d.getTime())) return typeof dateInput === 'string' ? dateInput : '';
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
